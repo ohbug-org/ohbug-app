@@ -1,5 +1,4 @@
-FROM node:14.16.1-alpine3.13 as builder
-#ENV TZ Asia/Shanghai
+FROM node:14-alpine as builder
 WORKDIR /app
 
 COPY package.json yarn.lock ./
