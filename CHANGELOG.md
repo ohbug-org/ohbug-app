@@ -1,3 +1,9 @@
+## [0.1.1](https://github.com/ohbug-org/ohbug-app/compare/0.1.0...0.1.1) (2021-09-10)
+
+### Bug Fixes
+
+- 修改版本号 ([38b7f43](https://github.com/ohbug-org/ohbug-app/commit/38b7f43a4f7ee54b44b97a076e751bd8fe18682e))
+
 # 0.1.0 (2021-09-10)
 
 ### Features
