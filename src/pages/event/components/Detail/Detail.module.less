@@ -1,0 +1,40 @@
+.root {
+  :global {
+    .ant-timeline-item-head-custom {
+      @apply left-2 text-xl;
+    }
+    .ant-timeline-item-tail {
+      @apply left-2;
+    }
+  }
+
+  .descriptions {
+    @apply mb-3;
+  }
+
+  .actions {
+    @apply overflow-auto pt-1;
+    max-height: 400px;
+
+    :global {
+      .ant-timeline-item {
+        @apply leading-relaxed;
+      }
+    }
+
+    .action {
+      @apply flex justify-between;
+
+      .type {
+        @apply font-bold;
+        width: 106px;
+      }
+      .data {
+        @apply flex-1 text-secondary;
+      }
+      .time {
+        @apply w-20 text-secondary;
+      }
+    }
+  }
+}

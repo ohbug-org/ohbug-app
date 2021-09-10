@@ -1,0 +1,18 @@
+{
+  "extends": "./node_modules/@chenyueban/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "./src",
+    "./public",
+    "vite.config.ts",
+    "windi.config.ts",
+    "postcss.config.js"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

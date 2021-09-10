@@ -1,0 +1,12 @@
+.tooltip {
+  &-time {
+    @apply pb-1;
+  }
+  &-value {
+    @apply relative pt-1;
+    &::before {
+      @apply absolute top-0 left-1/2 block w-6 h-1 -ml-3 bg-gray-100;
+      content: '';
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.root {
+  :global {
+    .ant-card-body {
+      @apply p-0;
+    }
+  }
+  &:not(:nth-child(2n)) {
+    @apply mr-6;
+  }
+  @apply mb-6 shadow-md;
+
+  &.active {
+    @apply shadow-2xl;
+  }
+
+  .title {
+    @apply flex justify-between items-center;
+  }
+
+  .wrapper {
+    @apply bg-gray-50 mt-4 px-6 py-12;
+  }
+}

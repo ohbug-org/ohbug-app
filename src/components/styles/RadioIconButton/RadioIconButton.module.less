@@ -1,0 +1,24 @@
+.root {
+  :global {
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      @apply text-success;
+      &:focus-within {
+        @apply shadow-none;
+      }
+    }
+  }
+  :global(.ant-radio-button-wrapper) {
+    @apply h-auto border-none outline-none !important;
+    &::before {
+      @apply outline-none !important;
+      content: none !important;
+    }
+    span:last-child {
+      @apply flex flex-col items-center !important;
+    }
+  }
+
+  .buttonLabel {
+    @apply text-black;
+  }
+}

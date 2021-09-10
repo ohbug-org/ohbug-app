@@ -1,0 +1,28 @@
+.root {
+  @apply flex-1 flex items-center justify-between overflow-hidden;
+  font-size: 15px;
+
+  .switch {
+    // @apply text-white;
+  }
+
+  .menu {
+    @apply flex-1 px-6 relative;
+
+    &:before {
+      content: '';
+      width: 1px;
+      background: rgba(255, 255, 255, 0.3);
+      position: absolute;
+      top: 33%;
+      bottom: 33%;
+      z-index: 1;
+    }
+
+    .item {
+      & > :first-child {
+        @apply mr-2;
+      }
+    }
+  }
+}

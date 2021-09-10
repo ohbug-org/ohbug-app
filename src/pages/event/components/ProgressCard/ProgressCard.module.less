@@ -1,0 +1,51 @@
+@card-width: 160px;
+@card-height: 60px;
+@progress-width: 40px;
+
+.root {
+  :global {
+    .ant-card-body {
+      @apply p-0;
+    }
+  }
+
+  @apply inline-block;
+  width: @card-width;
+  min-width: @card-width;
+  height: @card-height;
+  &:not(:last-child) {
+    @apply mr-3;
+  }
+
+  .container {
+    width: @card-width;
+    min-width: @card-width;
+    height: @card-height;
+    @apply overflow-hidden;
+
+    .content {
+      @apply flex flex-col justify-around float-left h-full px-5 py-1;
+
+      .title {
+        @apply m-0 text-base;
+      }
+      .description {
+        @apply text-xs;
+      }
+    }
+    .progress {
+      @apply relative float-right h-full text-sm flex items-center justify-center text-black bg-gray-300;
+      width: @progress-width;
+      &.white {
+        @apply text-white;
+      }
+
+      .line {
+        @apply absolute bottom-0 z-10 w-full bg-primary;
+      }
+      .number {
+        @apply z-20;
+      }
+    }
+  }
+}
