@@ -1,6 +1,7 @@
 {
+  "private": true,
   "name": "ohbug-app",
-  "version": "1.0.0-alpha.0",
+  "version": "0.1.0",
   "description": "Ohbug Web APP",
   "author": "chenyueban <jasonchan0527@gmail.com>",
   "homepage": "https://github.com/ohbug-org/ohbug-app",
@@ -21,7 +22,7 @@
     "test": "echo dist",
     "lint": "eslint **/*.{ts,tsx} --fix",
     "update:deps": "yarn upgrade-interactive --latest",
-    "release": "release-it --no-npm"
+    "release": "release-it"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
