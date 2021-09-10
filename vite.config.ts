@@ -60,24 +60,26 @@ export default defineConfig(({ mode }) => {
     }
   }
   if (mode === 'production') {
-    config.plugins?.push(
-      vitePluginImp({
-        libList: [
-          {
-            libName: 'antd',
-            style: (name) => `antd/es/${name}/style`,
-          },
-        ],
-      })
-    )
-    config.plugins?.push(
-      visualizer({
-        filename: './node_modules/.cache/visualizer/stats.html',
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-      })
-    )
+    if (config.plugins) {
+      config.plugins.push(
+        vitePluginImp({
+          libList: [
+            {
+              libName: 'antd',
+              style: (name) => `antd/es/${name}/style`,
+            },
+          ],
+        })
+      )
+      config.plugins.push(
+        visualizer({
+          filename: './node_modules/.cache/visualizer/stats.html',
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        })
+      )
+    }
   }
 
   return config
