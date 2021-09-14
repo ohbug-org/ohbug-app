@@ -39,8 +39,11 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
     }
     // eslint-disable-next-line
   }, [project])
+
+  const [currentPage, setCurrentPage] = useState(1)
   const handleTablePaginationChange = usePersistFn((current) => {
     if (project) {
+      setCurrentPage(current)
       searchIssues({
         projectId: project.id,
         page: current - 1,
@@ -86,7 +89,8 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                 ? {
                     onChange: handleTablePaginationChange,
                     pageSize: 20,
-                    total: data?.count,
+                    current: currentPage,
+                    total: data.count,
                   }
                 : false
             }
