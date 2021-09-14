@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/ohbug-org/ohbug-app/compare/0.1.1...0.1.2) (2021-09-14)
+
+### Bug Fixes
+
+- **event:** 修复 event 堆栈信息中 code 的样式问题 ([55d2b82](https://github.com/ohbug-org/ohbug-app/commit/55d2b82c437021ec3156f02e8ffd1b83ccad5692))
+- **issue:** 修复 issue 分页页码错误 ([4dc2c6b](https://github.com/ohbug-org/ohbug-app/commit/4dc2c6b31bd1ffe7b9fa18700c4e5dcbf811bc0c))
+
 ## [0.1.1](https://github.com/ohbug-org/ohbug-app/compare/0.1.0...0.1.1) (2021-09-10)
 
 ### Bug Fixes
