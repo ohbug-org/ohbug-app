@@ -1,28 +1,11 @@
 import { createModel } from '@rematch/core'
 import dayjs, { Dayjs } from 'dayjs'
 
+import type { Issue } from '@/types'
 import type { RootModel } from '@/models'
 import * as api from '@/api'
 import type { EffectReturn } from '@/ability'
 
-interface MetaData {
-  type: string
-  message: string
-  filename?: string
-  stack?: string
-  others?: string
-  [key: string]: any
-}
-export interface Issue {
-  id: number
-  type: string
-  intro: string
-  createdAt: Date
-  updatedAt: Date
-  eventsCount: number
-  usersCount: number
-  metadata: MetaData
-}
 export interface Trend {
   issueId: string
   buckets: {
@@ -35,7 +18,10 @@ export interface IssueState {
     当日: [Dayjs, Dayjs]
     近两周: [Dayjs, Dayjs]
   }
-  searchRange: [Date, Date]
+  searchCondition: {
+    range?: [Date, Date]
+    type?: string
+  }
   current?: Issue
   data?: Issue[]
   count?: number
@@ -57,16 +43,21 @@ export const issue = createModel<RootModel>()({
       当日: today,
       近两周: twoWeeks,
     },
-    searchRange: [
-      defaultValue[0].toISOString() as unknown as Date,
-      defaultValue[1].toISOString() as unknown as Date,
-    ],
+    searchCondition: {
+      range: [
+        defaultValue[0].toISOString() as unknown as Date,
+        defaultValue[1].toISOString() as unknown as Date,
+      ],
+    },
   } as IssueState,
   reducers: {
-    setRange(state, payload: IssueState['searchRange']) {
+    setSearchCondition(state, payload: IssueState['searchCondition']) {
       return {
         ...state,
-        searchRange: payload,
+        searchCondition: {
+          ...state.searchCondition,
+          ...payload,
+        },
       }
     },
     setIssues(state, payload: { data: Issue[]; count: number }) {
@@ -128,25 +119,28 @@ export const issue = createModel<RootModel>()({
         page = 0,
         start,
         end,
+        type,
       }: {
         projectId?: number
-        page: number
+        page?: number
         start?: Date
         end?: Date
+        type?: string
       },
       state
     ): EffectReturn<IssueState | undefined> {
       const id = projectId || state.project.current?.id!
       if (start && end) {
-        dispatch.issue.setRange([start, end])
+        dispatch.issue.setSearchCondition({ range: [start, end] })
       }
-      const s = start ?? state.issue.searchRange[0]
-      const e = end ?? state.issue.searchRange[1]
+      const s = start ?? state.issue.searchCondition?.range?.[0]
+      const e = end ?? state.issue.searchCondition?.range?.[1]
+      const t = type ?? state.issue.searchCondition.type
 
       await dispatch.project.trend({
         projectId: id,
-        start: s,
-        end: e,
+        start: s!,
+        end: e!,
       })
 
       const result = await api.issue.getMany.call({
@@ -154,6 +148,7 @@ export const issue = createModel<RootModel>()({
         page,
         start: s,
         end: e,
+        type: t,
       })
 
       const [data, count] = result

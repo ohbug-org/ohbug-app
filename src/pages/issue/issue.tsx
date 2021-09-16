@@ -11,7 +11,7 @@ import {
 import { Layout, MiniChart, LineChart } from '@/components'
 import { usePersistFn } from '@/hooks'
 
-import TimePicker from './components/TimePicker'
+import Search from './components/Search'
 
 import styles from './issue.module.less'
 
@@ -74,11 +74,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
           title={`问题列表 ${data?.data ? `(${data?.data.length})` : ''}`}
           hoverable
           loading={loading}
-          extra={
-            <Space size="middle">
-              <TimePicker />
-            </Space>
-          }
+          extra={<Search />}
         >
           <List
             className={styles.list}

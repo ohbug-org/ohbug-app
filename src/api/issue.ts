@@ -1,5 +1,5 @@
 import { createApi } from '@/ability'
-import type { Issue } from '@/models'
+import type { Issue } from '@/types'
 
 interface Get {
   issueId: number
@@ -9,6 +9,7 @@ interface GetMany {
   page: number
   start?: Date
   end?: Date
+  type?: string
 }
 type Period = '24h' | '14d' | 'all'
 interface GetTrend {

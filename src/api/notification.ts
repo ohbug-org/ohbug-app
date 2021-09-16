@@ -6,7 +6,7 @@ import type {
   NotificationSettingEmails,
   NotificationSettingWebHookType,
   NotificationSetting,
-} from '@/models'
+} from '@/types'
 
 type Level = 'serious' | 'warning' | 'default'
 interface Base {

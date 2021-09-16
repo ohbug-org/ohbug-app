@@ -8,7 +8,7 @@ import {
   useModelEffect,
   useModelState,
 } from '@/ability'
-import type { NotificationSetting, NotificationSettingWebHook } from '@/models'
+import type { NotificationSetting, NotificationSettingWebHook } from '@/types'
 import { Zone } from '@/components'
 import { useUpdateEffect, useBoolean, usePersistFn } from '@/hooks'
 import { registerServiceWorker, askNotificationPermission } from '@/utils'
@@ -95,7 +95,7 @@ const Setting: FC<RouteComponentProps> = () => {
     }
   })
   const handleFinish = usePersistFn((values) => {
-    const payload: NotificationSetting = {}
+    const payload = {} as NotificationSetting
     if (form.isFieldTouched('emails')) {
       payload.emails = values.emails
       updateSetting({

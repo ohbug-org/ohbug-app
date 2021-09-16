@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { render } from 'react-dom'
 import { ConfigProvider } from 'antd'
+import locale from 'antd/lib/locale/zh_CN'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -25,7 +26,7 @@ dayjs().locale('zh-cn').format()
 echarts.registerTheme('ohbug', chartTheme.theme)
 
 const App: FC = () => (
-  <ConfigProvider renderEmpty={renderEmpty}>
+  <ConfigProvider renderEmpty={renderEmpty} locale={locale}>
     <Provider store={store as any}>
       <Router />
     </Provider>

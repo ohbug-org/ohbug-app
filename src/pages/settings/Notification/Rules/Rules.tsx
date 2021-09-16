@@ -8,7 +8,7 @@ import {
   useModelEffect,
   useModelState,
 } from '@/ability'
-import type { NotificationRule } from '@/models'
+import type { NotificationRule } from '@/types'
 import { Zone } from '@/components'
 import { useBoolean } from '@/hooks'
 

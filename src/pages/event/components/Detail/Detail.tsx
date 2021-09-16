@@ -14,17 +14,11 @@ interface DetailProps {
   event: EventState['current']
 }
 const Detail: FC<DetailProps> = ({ event }) => {
-  const loading = !event
-
   return (
     <div className={styles.root}>
       {/* all */}
       {event?.detail.message && (
-        <Card
-          className={styles.descriptions}
-          title="错误信息"
-          loading={loading}
-        >
+        <Card className={styles.descriptions} title="错误信息">
           {typeof event.detail.message === 'string'
             ? event.detail.message
             : JSON.stringify(event.detail.message)}
@@ -33,17 +27,13 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* unhandledrejectionError */}
       {/* uncaughtError */}
       {event?.detail.stack && (
-        <Card
-          className={styles.descriptions}
-          title="堆栈信息"
-          loading={loading}
-        >
+        <Card className={styles.descriptions} title="堆栈信息">
           <StackInfo stack={event.detail.stack} source={event?.source} />
         </Card>
       )}
       {/* resourceError */}
       {event?.detail.selector && (
-        <Card className={styles.descriptions} loading={loading}>
+        <Card className={styles.descriptions}>
           <Descriptions title="DOM 信息" column={1} size="small" bordered>
             <Descriptions.Item label="HTML">
               {event.detail.outerHTML}
@@ -73,7 +63,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* ajaxError */}
       {/* fetchError */}
       {event?.type === 'ajaxError' && (
-        <Card className={styles.descriptions} loading={loading}>
+        <Card className={styles.descriptions}>
           <Descriptions title="HTTP 信息" column={1} size="small" bordered>
             <Descriptions.Item label="method">
               {event.detail.req.method}
@@ -99,7 +89,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
       {/* websocketError */}
       {event?.type === 'websocketError' && (
-        <Card className={styles.descriptions} loading={loading}>
+        <Card className={styles.descriptions}>
           <Descriptions title="WebSocket 信息" column={1} size="small" bordered>
             <Descriptions.Item label="url">
               {event.detail.url}
@@ -127,11 +117,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
 
       {/* actions */}
-      <Card
-        className={styles.descriptions}
-        title="Actions 信息"
-        loading={loading}
-      >
+      <Card className={styles.descriptions} title="Actions 信息">
         <Timeline className={styles.actions}>
           {event?.actions?.map((action) => {
             const { message, icon } = getMessageAndIconByActionType(action)

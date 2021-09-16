@@ -11,10 +11,10 @@ import {
   Button,
 } from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
-import { types } from '@ohbug/browser'
+import { types } from '@ohbug/core'
 
 import { useModelEffect } from '@/ability'
-import type { NotificationRule, NotificationRuleLevel } from '@/models'
+import type { NotificationRule, NotificationRuleLevel } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
 
 import { levelList, intervalList } from './Rules.core'

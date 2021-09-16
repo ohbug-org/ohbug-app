@@ -8,7 +8,7 @@ import {
   useModelEffect,
   useModelState,
 } from '@/ability'
-import type { SourceMap } from '@/models'
+import type { SourceMap } from '@/types'
 import { Zone } from '@/components'
 
 import styles from './SourceMap.module.less'

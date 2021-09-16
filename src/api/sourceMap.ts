@@ -1,5 +1,5 @@
 import { createApi } from '@/ability'
-import type { SourceMap } from '@/models'
+import type { SourceMap } from '@/types'
 
 export const sourceMap = {
   get: createApi<string, SourceMap[]>({

@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons'
 
 import { useModelEffect } from '@/ability'
-import { NotificationSettingWebHook } from '@/models'
+import type { NotificationSettingWebHook } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
 import { RadioIconButton } from '@/components'
 

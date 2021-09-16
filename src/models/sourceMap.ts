@@ -3,25 +3,8 @@ import { createModel } from '@rematch/core'
 import type { RootModel } from '@/models'
 import * as api from '@/api'
 import type { EffectReturn } from '@/ability'
+import type { SourceMap } from '@/types'
 
-export interface SourceMap {
-  id?: number
-  apiKey?: string
-  appVersion?: string
-  appType?: string
-  data?: {
-    path: string
-    size: number
-    encoding: string
-    filename: string
-    mimetype: string
-    fieldname: string
-    destination: string
-    originalname: string
-  }[]
-  createdAt: Date
-  updatedAt: Date
-}
 export interface SourceMapState {
   data?: SourceMap[]
 }

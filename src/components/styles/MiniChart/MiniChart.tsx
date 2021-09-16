@@ -126,7 +126,7 @@ const MiniChart: FC<MiniChartProps> = memo(
       [data, trend]
     )
 
-    return option ? (
+    return data ? (
       <div>
         {title && (
           <Typography.Title level={5}>
