@@ -1,3 +1,9 @@
+## [0.2.1](https://github.com/ohbug-org/ohbug-app/compare/0.2.0...0.2.1) (2021-09-16)
+
+### Bug Fixes
+
+- 修复 DatePicker 报错 ([eead5e0](https://github.com/ohbug-org/ohbug-app/commit/eead5e0d65af370d1087c0dc6c4bbd870295609a))
+
 # [0.2.0](https://github.com/ohbug-org/ohbug-app/compare/0.1.2...0.2.0) (2021-09-16)
 
 ### Features
