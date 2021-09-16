@@ -22,7 +22,7 @@
     "test": "echo dist",
     "lint": "tsc && eslint **/*.{ts,tsx} --fix",
     "update:deps": "yarn upgrade-interactive --latest",
-    "release": "release-it"
+    "release": "npm run lint && release-it"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
