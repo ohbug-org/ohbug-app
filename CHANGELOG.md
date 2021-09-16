@@ -1,3 +1,9 @@
+# [0.2.0](https://github.com/ohbug-org/ohbug-app/compare/0.1.2...0.2.0) (2021-09-16)
+
+### Features
+
+- **issue:** issue 支持根据 event type 进行筛选 ([49575d2](https://github.com/ohbug-org/ohbug-app/commit/49575d2a84060f1f5ab27c4670644e11602c246b))
+
 ## [0.1.2](https://github.com/ohbug-org/ohbug-app/compare/0.1.1...0.1.2) (2021-09-14)
 
 ### Bug Fixes
