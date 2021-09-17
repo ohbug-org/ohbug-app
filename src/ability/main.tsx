@@ -12,7 +12,8 @@ import Router from '@/ability/router'
 import { Provider, store } from '@/ability/model'
 import chartTheme from '@/styles/chart.json'
 
-import 'virtual:windi.css'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tailwindcss/tailwind.css'
 import '@/styles/theme.less'
 import '@/styles/reset.less'
 

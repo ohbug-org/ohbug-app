@@ -11,7 +11,7 @@
     "./src",
     "./public",
     "vite.config.ts",
-    "windi.config.ts",
+    "tailwind.config.js",
     "postcss.config.js"
   ],
   "exclude": ["node_modules", "dist"]

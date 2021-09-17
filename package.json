@@ -17,7 +17,6 @@
     "start": "vite",
     "build": "tsc && npm run lint && vite build",
     "serve": "vite preview",
-    "windicss": "windicss-analysis",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "echo dist",
     "lint": "tsc && eslint **/*.{ts,tsx} --fix",
@@ -69,13 +68,11 @@
     "mockjs": "^1.1.0",
     "release-it": "^14.11.5",
     "rollup-plugin-visualizer": "^5.5.2",
+    "tailwindcss": "^2.2.15",
     "typescript": "^4.4.3",
     "vite": "^2.5.7",
     "vite-plugin-imp": "^2.0.9",
-    "vite-plugin-windicss": "^1.4.3",
-    "vite-react-jsx": "^1.1.2",
-    "windicss": "^3.1.7",
-    "windicss-analysis": "^0.3.4"
+    "vite-react-jsx": "^1.1.2"
   },
   "config": {
     "commitizen": {

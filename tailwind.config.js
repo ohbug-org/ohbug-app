@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { defineConfig } from 'windicss/helpers'
-
-export default defineConfig({
-  darkMode: 'class',
+module.exports = {
+  mode: 'jit',
+  purge: ['./public/**/*.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
+  darkMode: false,
   theme: {
     extend: {
       colors: {
@@ -15,8 +14,6 @@ export default defineConfig({
       },
     },
   },
-  extract: {
-    include: ['src/**/*.{js,ts,jsx,tsx,css,less}', 'index.html'],
-    exclude: ['node_modules', '.git'],
-  },
-})
+  variants: {},
+  plugins: [],
+}

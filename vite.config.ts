@@ -3,7 +3,6 @@ import path from 'path'
 import { defineConfig, UserConfig } from 'vite'
 import reactJsx from 'vite-react-jsx'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import WindiCSS from 'vite-plugin-windicss'
 import vitePluginImp from 'vite-plugin-imp'
 import visualizer from 'rollup-plugin-visualizer'
 
@@ -33,7 +32,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    plugins: [reactJsx(), reactRefresh(), WindiCSS()],
+    plugins: [reactJsx(), reactRefresh()],
     build: {
       rollupOptions: {
         output: {

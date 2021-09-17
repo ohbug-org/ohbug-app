@@ -1,25 +1,26 @@
-@layer base {
-  :root {
-    --primary-color: @primary-color;
-    --success-color: @success-color;
-    --info-color: @info-color;
-    --warning-color: @warning-color;
-    --error-color: @error-color;
-    --text-color-secondary: @text-color-secondary;
-    --layout-body-background: @layout-body-background;
-  }
-  #root {
+:root {
+  --primary-color: @primary-color;
+  --success-color: @success-color;
+  --info-color: @info-color;
+  --warning-color: @warning-color;
+  --error-color: @error-color;
+  --text-color-secondary: @text-color-secondary;
+  --layout-body-background: @layout-body-background;
+}
+#root {
+  @apply min-h-screen;
+  & > section {
     @apply min-h-screen;
-    & > section {
-      @apply min-h-screen;
-    }
   }
-  img {
-    @apply block;
-  }
+}
+img {
+  @apply block;
 }
 
 .ant {
+  &icon {
+    vertical-align: 0.07rem !important;
+  }
   &-card {
     @apply overflow-hidden;
     &.ant-card-bordered {
