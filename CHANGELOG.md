@@ -1,3 +1,9 @@
+# [0.3.0](https://github.com/ohbug-org/ohbug-app/compare/0.2.1...0.3.0) (2021-09-17)
+
+### Features
+
+- 移除 windicss 迁移到 tailwindcss ([58c7625](https://github.com/ohbug-org/ohbug-app/commit/58c7625141af0a12d330ff6b703b03b08bc64879))
+
 ## [0.2.1](https://github.com/ohbug-org/ohbug-app/compare/0.2.0...0.2.1) (2021-09-16)
 
 ### Bug Fixes
