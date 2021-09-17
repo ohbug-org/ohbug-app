@@ -2,9 +2,15 @@ name: push_to_registry
 
 on:
   push:
-    branches: main
+    branches:
+      - main
+    tags:
+      - '*'
   pull_request:
-    branches: main
+    branches:
+      - main
+    tags:
+      - '*'
 
 jobs:
   push_to_registry:
