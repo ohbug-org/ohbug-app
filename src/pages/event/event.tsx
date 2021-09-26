@@ -1,16 +1,12 @@
-import { FC, useEffect } from 'react'
-import { Row, Col, Tabs, Radio } from 'antd'
+import { FC, Suspense } from 'react'
+import { Row, Col, Tabs, Radio, Spin } from 'antd'
 import ReactJson from 'react-json-view'
 
-import {
-  RouteComponentProps,
-  navigate,
-  useParams,
-  useModelEffect,
-} from '@/ability'
+import { RouteComponentProps, navigate, useParams } from '@/ability'
 import { Layout } from '@/components'
-import type { EventState, IssueState } from '@/models'
 import { useCreation, usePersistFn } from '@/hooks'
+import type { Issue, EventInAPP } from '@/types'
+import { useGetEvent, useGetIssue } from '@/services'
 
 import Title from './components/Title'
 import Profile from './components/Profile'
@@ -19,8 +15,8 @@ import Trend from './components/Trend'
 import ExtensionUI from './components/ExtensionUI'
 
 interface EventTabProps {
-  event: EventState['current']
-  issue: IssueState['current']
+  event?: EventInAPP<any>
+  issue?: Issue
 }
 const EventTab: FC<EventTabProps> = ({ event, issue }) => {
   const tabList = useCreation(() => {
@@ -115,46 +111,20 @@ const EventTab: FC<EventTabProps> = ({ event, issue }) => {
 }
 
 const Event: FC<RouteComponentProps> = () => {
-  const { data: lastEvent, run: getLatestEvent } = useModelEffect(
-    (dispatch) => dispatch.event.getLatestEvent,
-    {
-      manual: true,
-    }
-  )
-  const { data: event, run: getEvent } = useModelEffect(
-    (dispatch) => dispatch.event.get,
-    {
-      manual: true,
-    }
-  )
-  const { data: issue, run: getIssue } = useModelEffect(
-    (dispatch) => dispatch.issue.get,
-    {
-      manual: true,
-    }
-  )
   const { issueId, eventId } = useParams()
 
-  useEffect(() => {
-    if (eventId === 'latest' && issueId) {
-      getLatestEvent({ issueId })
-    } else {
-      getEvent({
-        eventId,
-        issueId,
-      })
-    }
-    getIssue({ issueId })
-    // eslint-disable-next-line
-  }, [eventId, issueId])
+  const { data: event } = useGetEvent(eventId, issueId)
+  const { data: issue } = useGetIssue(issueId)
 
   return (
     <Layout>
-      {/* 标题信息 */}
-      <Title event={lastEvent || event} issue={issue} />
+      <Suspense fallback={<Spin />}>
+        {/* 标题信息 */}
+        <Title event={event} issue={issue} />
 
-      {/* tab */}
-      <EventTab event={lastEvent || event} issue={issue} />
+        {/* tab */}
+        <EventTab event={event} issue={issue} />
+      </Suspense>
     </Layout>
   )
 }

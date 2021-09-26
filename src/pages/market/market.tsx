@@ -1,62 +1,51 @@
-import type { FC } from 'react'
+import { FC, useState, Suspense } from 'react'
 import clsx from 'clsx'
-import { Spin, Row, Col, Card, Avatar } from 'antd'
+import { Row, Col, Card, Avatar, Spin } from 'antd'
 
-import { RouteComponentProps, useModelEffect } from '@/ability'
+import type { RouteComponentProps } from '@/ability'
 import { Layout } from '@/components'
 import { usePersistFn } from '@/hooks'
+import { useGetExtensions } from '@/services'
 
 import ExtensionDetail from './components/ExtensionDetail'
 
 import styles from './market.module.less'
 
 const Market: FC<RouteComponentProps> = () => {
-  const { data, loading } = useModelEffect(
-    (dispatch) => dispatch.extension.getMany
-  )
-  const { loading: detailLoading, run: getDetail } = useModelEffect(
-    (dispatch) => dispatch.extension.get,
-    {
-      manual: true,
-    }
-  )
+  const [currentId, setCurrentId] = useState<number>()
+  const { data } = useGetExtensions()
 
   const handleSelectExtension = usePersistFn((id: number) => {
-    getDetail({ extensionId: id })
+    setCurrentId(id)
   })
 
   return (
     <Layout className={styles.root}>
-      {loading ? (
-        <Spin />
-      ) : (
-        <Row gutter={24}>
-          <Col className={styles.extensions} span={6}>
-            {data?.data?.map((v) => (
-              <Card
-                className={clsx(styles.extension, {
-                  [styles.current]: v.id === data?.currentId,
-                })}
-                onClick={() => handleSelectExtension(v.id!)}
-                hoverable
-                key={v.key}
-              >
-                <Card.Meta
-                  avatar={<Avatar src={v.logo ?? '/logo.svg'} />}
-                  title={v.name}
-                  description={v.description}
-                />
-              </Card>
-            ))}
-          </Col>
-          <Col className={styles['extension-detail']} span={18}>
-            <ExtensionDetail
-              extension={data?.current}
-              loading={detailLoading}
-            />
-          </Col>
-        </Row>
-      )}
+      <Row gutter={24}>
+        <Col className={styles.extensions} span={6}>
+          {data?.[0]?.map((v) => (
+            <Card
+              className={clsx(styles.extension, {
+                [styles.current]: v.id === currentId,
+              })}
+              onClick={() => handleSelectExtension(v.id!)}
+              hoverable
+              key={v.key}
+            >
+              <Card.Meta
+                avatar={<Avatar src={v.logo ?? '/logo.svg'} />}
+                title={v.name}
+                description={v.description}
+              />
+            </Card>
+          ))}
+        </Col>
+        <Col className={styles['extension-detail']} span={18}>
+          <Suspense fallback={<Spin />}>
+            <ExtensionDetail id={currentId} />
+          </Suspense>
+        </Col>
+      </Row>
     </Layout>
   )
 }

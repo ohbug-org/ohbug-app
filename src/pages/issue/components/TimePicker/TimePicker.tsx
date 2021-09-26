@@ -2,26 +2,33 @@ import type { FC } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import { Tooltip } from 'antd'
 
-import { useModelEffect, useModelState } from '@/ability'
 import { DatePicker } from '@/components'
 import { usePersistFn } from '@/hooks'
 
-const TimePicker: FC = () => {
-  const { data, run: searchIssues } = useModelEffect(
-    (dispatch) => dispatch.issue.searchIssues,
-    { manual: true }
-  )
-  const project = useModelState((state) => state.project.current)
+interface TimePickerProps {
+  handleSearch: (params: {
+    page?: number
+    start?: string
+    end?: string
+    type?: string
+  }) => void
+}
 
+const today: [Dayjs, Dayjs] = [dayjs().subtract(23, 'hour'), dayjs()]
+const twoWeeks: [Dayjs, Dayjs] = [
+  dayjs().subtract(13, 'day').startOf('day'),
+  dayjs().startOf('day'),
+]
+
+const TimePicker: FC<TimePickerProps> = ({ handleSearch }) => {
   const handleTimeChange = usePersistFn(
     (dates: [start: Dayjs | null, end: Dayjs | null] | null) => {
-      if (project && dates) {
+      if (dates) {
         const [start, end] = dates
-        searchIssues({
-          projectId: project.id,
+        handleSearch({
           page: 0,
-          start: start?.toISOString() as unknown as Date,
-          end: end?.toISOString() as unknown as Date,
+          start: start?.toISOString(),
+          end: end?.toISOString(),
         })
       }
     }
@@ -30,8 +37,13 @@ const TimePicker: FC = () => {
   return (
     <Tooltip title="根据 Issue 创建时间筛选">
       <DatePicker.RangePicker
-        defaultValue={[dayjs().subtract(13, 'day'), dayjs()]}
-        ranges={data?.ranges}
+        defaultValue={twoWeeks}
+        ranges={{
+          // @ts-ignore
+          当日: today,
+          // @ts-ignore
+          近两周: twoWeeks,
+        }}
         onChange={handleTimeChange}
       />
     </Tooltip>

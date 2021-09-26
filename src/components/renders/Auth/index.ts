@@ -1,12 +1,13 @@
 import { FC, createElement, isValidElement } from 'react'
 
 import { Loading } from '@/components'
-import { RouteComponentProps, useModelEffect, Redirect } from '@/ability'
+import { RouteComponentProps, Redirect } from '@/ability'
+import { useGetProjects } from '@/services'
 
 const Auth: FC<RouteComponentProps> = ({ children }) => {
-  const { data, loading } = useModelEffect((dispatch) => dispatch.project.get)
+  const { data, isLoading } = useGetProjects()
 
-  if (loading) {
+  if (isLoading) {
     return createElement(Loading)
   }
 

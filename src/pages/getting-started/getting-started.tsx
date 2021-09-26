@@ -1,21 +1,23 @@
 import type { FC } from 'react'
 import { Typography, Button } from 'antd'
 import { PushpinOutlined } from '@ant-design/icons'
+import { useRecoilValue } from 'recoil'
 
-import { RouteComponentProps, navigate, useModelEffect } from '@/ability'
+import { currentProjectState } from '@/states'
+import { RouteComponentProps, navigate } from '@/ability'
 import { usePersistFn } from '@/hooks'
 import { Highlight } from '@/components'
 
 import styles from './getting-started.module.less'
 
 const GettingStarted: FC<RouteComponentProps> = () => {
-  const { data, loading } = useModelEffect((dispatch) => dispatch.project.get)
+  const currentProject = useRecoilValue(currentProjectState)
 
   const handleCreateProject = usePersistFn(() => {
     navigate('create-project')
   })
 
-  if (data) {
+  if (currentProject) {
     return (
       <div className={styles.root}>
         <div>
@@ -36,7 +38,7 @@ yarn add @ohbug/browser`}
             language="javascript"
             code={`import Ohbug from '@ohbug/browser'
 
-Ohbug.init({ apiKey: '${data?.apiKey}' })`}
+Ohbug.init({ apiKey: '${currentProject?.apiKey}' })`}
           />
 
           <Button type="link" size="large" href="/issue">
@@ -57,7 +59,6 @@ Ohbug.init({ apiKey: '${data?.apiKey}' })`}
         type="primary"
         size="large"
         icon={<PushpinOutlined />}
-        loading={loading}
         onClick={handleCreateProject}
       >
         开始

@@ -8,7 +8,7 @@ import { useCreation } from '@/hooks'
 import './MiniChart.module.less'
 
 type Data = {
-  timestamp: number
+  timestamp: string
   count: number
 }
 interface MiniChartProps {

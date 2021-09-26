@@ -1,13 +1,14 @@
 import type { FC } from 'react'
-import dayjs from 'dayjs'
 import { Card, Image } from 'antd'
 import clsx from 'clsx'
+import { useSetRecoilState } from 'recoil'
 
 import type { Project } from '@/types'
-import { useRequest, usePersistFn } from '@/hooks'
-import { navigate, useModelDispatch } from '@/ability'
-import * as api from '@/api'
+import { usePersistFn } from '@/hooks'
+import { navigate } from '@/ability'
 import { MiniChart } from '@/components'
+import { useGetProjectTrend } from '@/services'
+import { currentProjectState } from '@/states'
 
 import styles from './ProjectCard.module.less'
 
@@ -16,27 +17,12 @@ interface ProjectCardProps {
   active?: boolean
 }
 
-function getTrend(projectId: number) {
-  const start = dayjs().subtract(13, 'day').toISOString() as unknown as Date
-  const end = dayjs().toISOString() as unknown as Date
-  return () =>
-    api.project.trend.call({
-      projectId,
-      start,
-      end,
-    })
-}
-
 const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
-  const { data, loading } = useRequest(getTrend(project.id!), {
-    initialData: { buckets: [] },
-  })
+  const { data } = useGetProjectTrend(project.id!)
 
-  const setCurrentProject = useModelDispatch(
-    (dispatch) => dispatch.project.setCurrentProject
-  )
+  const setCurrentProjectState = useSetRecoilState(currentProjectState)
   const handleToIssue = usePersistFn(() => {
-    setCurrentProject(project.id!)
+    setCurrentProjectState(project)
     navigate(`/issue`)
   })
 
@@ -61,7 +47,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
       onClick={handleToIssue}
     >
       <div className={styles.wrapper}>
-        <MiniChart trend="14d" loading={loading} data={data.buckets} />
+        <MiniChart trend="14d" data={data.buckets} />
       </div>
     </Card>
   )

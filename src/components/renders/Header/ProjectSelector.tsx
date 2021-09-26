@@ -1,22 +1,24 @@
 import type { FC } from 'react'
 import { Menu, Drawer, Image, Button, Divider } from 'antd'
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { navigate, useModelDispatch, useModelState } from '@/ability'
+import { currentProjectState, projectsState } from '@/states'
+import { navigate } from '@/ability'
 import { usePersistFn, useBoolean } from '@/hooks'
 
 const ProjectSelector: FC = () => {
-  const projects = useModelState((state) => state.project.data)
-  const project = useModelState((state) => state.project.current)
-  const setCurrentProject = useModelDispatch(
-    (dispatch) => dispatch.project.setCurrentProject
-  )
+  const projects = useRecoilValue(projectsState)
+  const [project, setProject] = useRecoilState(currentProjectState)
   const [visible, { toggle }] = useBoolean(false)
 
   const handleProjectChange = usePersistFn(({ key: projectId }) => {
     if (projectId !== 'create') {
-      setCurrentProject(projectId)
-      toggle(false)
+      const target = projects?.find((v) => v.id === parseInt(projectId, 10))
+      if (target) {
+        setProject(target)
+        toggle(false)
+      }
     }
   })
   const handleNavigateToCreateProject = usePersistFn(() => {

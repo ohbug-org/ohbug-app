@@ -1,43 +1,34 @@
-import { FC, useState } from 'react'
-import { Form, Switch, Input, Space, Button, Table, Modal } from 'antd'
+import { FC, useState, useEffect } from 'react'
+import { Form, Switch, Input, Space, Button, Table, Modal, message } from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
+import { useRecoilValue } from 'recoil'
 
-import {
-  RouteComponentProps,
-  useModelDispatch,
-  useModelEffect,
-  useModelState,
-} from '@/ability'
+import { currentProjectState } from '@/states'
+import type { RouteComponentProps } from '@/ability'
 import type { NotificationSetting, NotificationSettingWebHook } from '@/types'
 import { Zone } from '@/components'
-import { useUpdateEffect, useBoolean, usePersistFn } from '@/hooks'
+import { useBoolean, usePersistFn } from '@/hooks'
 import { registerServiceWorker, askNotificationPermission } from '@/utils'
+import {
+  UpdateSetting,
+  useDeleteSettingWebhook,
+  useGetSetting,
+  useUpdateSetting,
+  useUpdateSettingWebhook,
+} from '@/services'
 
 import EditWebhook from './EditWebhook'
 
 import styles from './Setting.module.less'
 
 const Setting: FC<RouteComponentProps> = () => {
-  const currentProject = useModelState((state) => state.project.current)
-  const { data } = useModelEffect(
-    (dispatch) => dispatch.notification.getSetting,
-    { refreshDeps: [currentProject] }
-  )
-  const { loading: browserSwitchLoading, run: updateSetting } = useModelEffect(
-    (dispatch) => dispatch.notification.updateSetting,
-    {
-      manual: true,
-    }
-  )
-  const { loading: switchLoading, run: updateWebhooksSetting } = useModelEffect(
-    (dispatch) => dispatch.notification.updateWebhooksSetting,
-    { manual: true }
-  )
-  const deleteWebhooksSetting = useModelDispatch(
-    (dispatch) => dispatch.notification.deleteWebhooksSetting
-  )
-  const error = useModelDispatch((dispatch) => dispatch.app.error)
-  const [form] = Form.useForm()
+  const currentProject = useRecoilValue(currentProjectState)
+  const { data } = useGetSetting({ projectId: currentProject?.id })
+  const { mutation: updateSettingMutation } = useUpdateSetting()
+  const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()
+  const { mutation: deleteWebhooksSettingMutation } = useDeleteSettingWebhook()
+
+  const [form] = Form.useForm<UpdateSetting>()
   const [currentRule, setCurrentRule] = useState<
     NotificationSettingWebHook | undefined
   >(undefined)
@@ -49,14 +40,15 @@ const Setting: FC<RouteComponentProps> = () => {
     return true
   })
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (data) {
       form.setFieldsValue({
         ...data,
+        // @ts-ignore
         browser: data?.browser?.open,
       })
     }
-  }, [data])
+  }, [data, form])
 
   const [
     webhookModalVisible,
@@ -70,7 +62,8 @@ const Setting: FC<RouteComponentProps> = () => {
         .then(() => {
           registerServiceWorker().then((subscribeOptions) => {
             if (subscribeOptions) {
-              updateSetting({
+              updateSettingMutation.mutate({
+                projectId: currentProject?.id,
                 browser: {
                   open: checked,
                   data: JSON.parse(JSON.stringify(subscribeOptions)),
@@ -80,13 +73,15 @@ const Setting: FC<RouteComponentProps> = () => {
           })
         })
         .catch((err) => {
-          error(err.message)
+          message.error(err.message)
           form.setFieldsValue({
+            // @ts-ignore
             browser: false,
           })
         })
     } else {
-      updateSetting({
+      updateSettingMutation.mutate({
+        projectId: currentProject?.id,
         browser: {
           open: checked,
           data: null,
@@ -98,7 +93,8 @@ const Setting: FC<RouteComponentProps> = () => {
     const payload = {} as NotificationSetting
     if (form.isFieldTouched('emails')) {
       payload.emails = values.emails
-      updateSetting({
+      updateSettingMutation.mutate({
+        projectId: currentProject?.id,
         ...payload,
       })
     }
@@ -111,7 +107,7 @@ const Setting: FC<RouteComponentProps> = () => {
         onCancel={webhookModalOnCancel}
         initialValues={currentRule}
       />
-      <Form form={form} onFinish={handleFinish}>
+      <Form form={form} initialValues={data} onFinish={handleFinish}>
         <Zone title="邮件通知">
           <Form.List name="emails">
             {(fields, operation) => (
@@ -216,7 +212,7 @@ const Setting: FC<RouteComponentProps> = () => {
                 valuePropName="checked"
               >
                 <Switch
-                  loading={browserSwitchLoading}
+                  loading={updateSettingMutation.isLoading}
                   onChange={handleBrowserChange}
                   disabled={browserDisabled}
                 />
@@ -258,10 +254,14 @@ const Setting: FC<RouteComponentProps> = () => {
                 render={(item) => (
                   <Switch
                     checked={item.open}
-                    loading={switchLoading && currentSwitch === item?.id}
+                    loading={
+                      updateWebhooksSettingMutation.isLoading &&
+                      currentSwitch === item?.id
+                    }
                     onChange={(checked) => {
                       setCurrentSwitch(item?.id)
-                      updateWebhooksSetting({
+                      updateWebhooksSettingMutation.mutate({
+                        projectId: currentProject?.id,
                         id: item.id,
                         open: checked,
                       })
@@ -296,7 +296,8 @@ const Setting: FC<RouteComponentProps> = () => {
                           okType: 'danger',
                           cancelText: '取消',
                           onOk() {
-                            deleteWebhooksSetting({
+                            deleteWebhooksSettingMutation.mutate({
+                              projectId: currentProject?.id,
                               id: item?.id,
                             })
                           },

@@ -1,13 +1,10 @@
 import { FC, useState } from 'react'
 import { Table, Tag, Switch, Button, Modal } from 'antd'
 import dayjs from 'dayjs'
+import { useRecoilValue } from 'recoil'
 
-import {
-  RouteComponentProps,
-  useModelDispatch,
-  useModelEffect,
-  useModelState,
-} from '@/ability'
+import { currentProjectState } from '@/states'
+import type { RouteComponentProps } from '@/ability'
 import type { NotificationRule } from '@/types'
 import { Zone } from '@/components'
 import { useBoolean } from '@/hooks'
@@ -16,20 +13,13 @@ import EditRule from './EditRule'
 import { levelList } from './Rules.core'
 
 import styles from './Rules.module.less'
+import { useDeleteRule, useGetRules, useUpdateRule } from '@/services'
 
 const Rules: FC<RouteComponentProps> = () => {
-  const currentProject = useModelState((state) => state.project.current)
-  const { data } = useModelEffect(
-    (dispatch) => dispatch.notification.getRules,
-    { refreshDeps: [currentProject] }
-  )
-  const { loading: switchLoading, run: updateRules } = useModelEffect(
-    (dispatch) => dispatch.notification.updateRules,
-    { manual: true }
-  )
-  const deleteRule = useModelDispatch(
-    (dispatch) => dispatch.notification.deleteRule
-  )
+  const currentProject = useRecoilValue(currentProjectState)
+  const { data } = useGetRules({ projectId: currentProject?.id })
+  const { mutation: updateRuleMutation } = useUpdateRule()
+  const { mutation: deleteRuleMutation } = useDeleteRule()
   const [modalVisible, { setTrue: modalShow, setFalse: modalOnCancel }] =
     useBoolean(false)
   const [currentRule, setCurrentRule] = useState<NotificationRule | undefined>(
@@ -95,10 +85,13 @@ const Rules: FC<RouteComponentProps> = () => {
             render={(item: NotificationRule) => (
               <Switch
                 checked={item?.open}
-                loading={switchLoading && currentSwitch === item?.id}
+                loading={
+                  updateRuleMutation.isLoading && currentSwitch === item?.id
+                }
                 onChange={(checked) => {
                   setCurrentSwitch(item?.id)
-                  updateRules({
+                  updateRuleMutation.mutate({
+                    projectId: currentProject?.id,
                     ruleId: item.id!,
                     open: checked,
                   })
@@ -133,7 +126,8 @@ const Rules: FC<RouteComponentProps> = () => {
                       okType: 'danger',
                       cancelText: '取消',
                       onOk() {
-                        deleteRule({
+                        deleteRuleMutation.mutate({
+                          projectId: currentProject?.id,
                           ruleId: item.id!,
                         })
                       },

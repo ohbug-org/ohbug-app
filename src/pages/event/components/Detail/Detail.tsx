@@ -3,7 +3,7 @@ import { Card, Descriptions, Timeline, Tooltip } from 'antd'
 import dayjs from 'dayjs'
 import { WarningOutlined } from '@ant-design/icons'
 
-import type { EventState } from '@/models'
+import type { EventInAPP } from '@/types'
 
 import StackInfo from '../StackInfo'
 import { getMessageAndIconByActionType } from './core'
@@ -11,7 +11,7 @@ import { getMessageAndIconByActionType } from './core'
 import styles from './Detail.module.less'
 
 interface DetailProps {
-  event: EventState['current']
+  event?: EventInAPP<any>
 }
 const Detail: FC<DetailProps> = ({ event }) => {
   return (

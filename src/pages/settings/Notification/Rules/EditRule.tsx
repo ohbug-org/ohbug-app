@@ -12,10 +12,17 @@ import {
 } from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { types } from '@ohbug/core'
+import { useRecoilValue } from 'recoil'
 
-import { useModelEffect } from '@/ability'
+import { currentProjectState } from '@/states'
 import type { NotificationRule, NotificationRuleLevel } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
+import {
+  CreateRule,
+  UpdateRule,
+  useCreateRule,
+  useUpdateRule,
+} from '@/services'
 
 import { levelList, intervalList } from './Rules.core'
 
@@ -68,24 +75,14 @@ function getRuleDataType(
   return undefined
 }
 const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
-  const { loading: createRulesLoading, run: createRules } = useModelEffect(
-    (dispatch) => dispatch.notification.createRules,
-    {
-      manual: true,
-    }
-  )
-  const { loading: updateRulesLoading, run: updateRules } = useModelEffect(
-    (dispatch) => dispatch.notification.updateRules,
-    {
-      manual: true,
-    }
-  )
-  const [form] = Form.useForm()
+  const currentProject = useRecoilValue(currentProjectState)
+  const { mutation: createRuleMutation } = useCreateRule()
+  const { mutation: updateRuleMutation } = useUpdateRule()
+  const [form] = Form.useForm<CreateRule>()
   const [data, setData] = useState<'indicator' | 'range'>(
     getRuleDataType(initialValues) || 'range'
   )
   const [type, setType] = useState(() => (initialValues ? 'update' : 'create'))
-  const confirmLoading = createRulesLoading || updateRulesLoading
 
   useUpdateEffect(() => {
     setData(getRuleDataType(initialValues) || 'range')
@@ -100,8 +97,6 @@ const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
         level: initialValues.level,
         interval: initialValues.interval,
         open: initialValues.open,
-        recently: initialValues.recently,
-        count: initialValues.count,
       })
     } else {
       form.resetFields()
@@ -111,18 +106,25 @@ const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
   const handleOk = usePersistFn(() => {
     form.submit()
   })
-  const handleFinish = usePersistFn((value) => {
-    const payload = value
-    if (type === 'update') {
-      payload.ruleId = initialValues?.id
+  const handleFinish = usePersistFn((payload: CreateRule | UpdateRule) => {
+    if (currentProject) {
+      if (type === 'create') {
+        const value = payload as CreateRule
+        createRuleMutation.mutate({
+          projectId: currentProject.id,
+          ...value,
+        })
+      }
+      if (type === 'update') {
+        const value = payload as UpdateRule
+        value.ruleId = initialValues?.id!
+        updateRuleMutation.mutate({
+          projectId: currentProject.id,
+          ...value,
+        })
+      }
+      onCancel?.()
     }
-    if (type === 'create') {
-      createRules(payload)
-    }
-    if (type === 'update') {
-      updateRules(payload)
-    }
-    onCancel?.()
   })
 
   return (
@@ -131,7 +133,7 @@ const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
       visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
-      confirmLoading={confirmLoading}
+      confirmLoading={createRuleMutation.isLoading}
       width={750}
       okText="保存"
       cancelText="取消"

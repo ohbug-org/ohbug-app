@@ -1,36 +1,26 @@
 import type { FC } from 'react'
 import { Button, Modal, Table } from 'antd'
 import dayjs from 'dayjs'
+import { useRecoilValue } from 'recoil'
 
-import {
-  RouteComponentProps,
-  useModelDispatch,
-  useModelEffect,
-  useModelState,
-} from '@/ability'
+import { currentProjectState } from '@/states'
+import type { RouteComponentProps } from '@/ability'
 import type { SourceMap } from '@/types'
 import { Zone } from '@/components'
 
 import styles from './SourceMap.module.less'
+import { useDeleteSourceMap, useGetSourceMaps } from '@/services'
 
 const SourceMapCompnent: FC<RouteComponentProps> = () => {
-  const currentProject = useModelState((state) => state.project.current)
-  const { data, loading } = useModelEffect(
-    (dispatch) => dispatch.sourceMap.get,
-    {
-      refreshDeps: [currentProject],
-    }
-  )
-  const deleteSourceMap = useModelDispatch(
-    (dispatch) => dispatch.sourceMap.delete
-  )
+  const currentProject = useRecoilValue(currentProjectState)
+  const { data } = useGetSourceMaps(currentProject?.apiKey)
+  const { mutation } = useDeleteSourceMap()
 
   return (
     <section className={styles.root}>
       <Zone title="SourceMap">
         <Table<SourceMap>
           dataSource={data}
-          loading={loading}
           rowKey={(record) => record.id!}
           pagination={false}
         >
@@ -75,7 +65,8 @@ const SourceMapCompnent: FC<RouteComponentProps> = () => {
                       okType: 'danger',
                       cancelText: '取消',
                       onOk() {
-                        deleteSourceMap({
+                        mutation.mutate({
+                          apiKey: currentProject?.apiKey,
                           sourceMapId: item?.id,
                         })
                       },

@@ -1,8 +1,9 @@
 import { FC, useRef } from 'react'
+import { useRecoilValue } from 'recoil'
 import type { OhbugEvent } from '@ohbug/types'
 
+import { currentProjectState } from '@/states'
 import { useCreation, useMount } from '@/hooks'
-import { useModelState } from '@/ability'
 
 import frameURL from './frame.html?url'
 
@@ -15,7 +16,7 @@ interface ExtensionUIProps {
 }
 
 const ExtensionUI: FC<ExtensionUIProps> = ({ extensionKey, data, event }) => {
-  const currentProject = useModelState((state) => state.project.current)
+  const currentProject = useRecoilValue(currentProjectState)
   const extension = useCreation(
     () =>
       (currentProject?.extensions || []).find((v) => v.key === extensionKey),

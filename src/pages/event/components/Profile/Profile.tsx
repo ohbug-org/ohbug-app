@@ -12,7 +12,7 @@ import {
   PushpinOutlined,
 } from '@ant-design/icons'
 
-import type { EventState } from '@/models'
+import type { EventInAPP } from '@/types'
 import { RelativeTime } from '@/components'
 import { useCreation } from '@/hooks'
 
@@ -22,7 +22,7 @@ import TooltipTags from './components/TooltipTags'
 import styles from './Profile.module.less'
 
 interface ProfileProps {
-  event: EventState['current']
+  event?: EventInAPP<any>
 }
 const Profile: FC<ProfileProps> = ({ event }) => {
   const tooltipTagsList = useCreation(() => {
