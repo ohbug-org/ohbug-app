@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ConfigProvider } from 'antd'
 import locale from 'antd/lib/locale/zh_CN'
-import * as echarts from 'echarts'
+import { registerTheme } from 'echarts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
@@ -27,7 +27,7 @@ if (import.meta.env.DEV) {
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 dayjs().locale('zh-cn').format()
-echarts.registerTheme('ohbug', chartTheme.theme)
+registerTheme('ohbug', chartTheme.theme)
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
