@@ -12,9 +12,9 @@ import {
 } from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import { types } from '@ohbug/core'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { NotificationRule, NotificationRuleLevel } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
 import {
@@ -75,7 +75,7 @@ function getRuleDataType(
   return undefined
 }
 const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const { mutation: createRuleMutation } = useCreateRule()
   const { mutation: updateRuleMutation } = useUpdateRule()
   const [form] = Form.useForm<CreateRule>()

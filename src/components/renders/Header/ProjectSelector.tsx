@@ -1,15 +1,15 @@
 import type { FC } from 'react'
 import { Menu, Drawer, Image, Button, Divider } from 'antd'
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState, projectsState } from '@/states'
+import { currentProjectAtom, projectsAtom } from '@/atoms'
 import { navigate } from '@/ability'
 import { usePersistFn, useBoolean } from '@/hooks'
 
 const ProjectSelector: FC = () => {
-  const projects = useRecoilValue(projectsState)
-  const [project, setProject] = useRecoilState(currentProjectState)
+  const [projects] = useAtom(projectsAtom)
+  const [project, setProject] = useAtom(currentProjectAtom)
   const [visible, { toggle }] = useBoolean(false)
 
   const handleProjectChange = usePersistFn(({ key: projectId }) => {

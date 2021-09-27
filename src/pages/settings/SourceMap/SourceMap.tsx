@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { Button, Modal, Table } from 'antd'
 import dayjs from 'dayjs'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { RouteComponentProps } from '@/ability'
 import type { SourceMap } from '@/types'
 import { Zone } from '@/components'
@@ -12,7 +12,7 @@ import styles from './SourceMap.module.less'
 import { useDeleteSourceMap, useGetSourceMaps } from '@/services'
 
 const SourceMapCompnent: FC<RouteComponentProps> = () => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetSourceMaps(currentProject?.apiKey)
   const { mutation } = useDeleteSourceMap()
 

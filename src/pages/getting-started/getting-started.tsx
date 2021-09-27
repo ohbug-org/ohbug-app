@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { Typography, Button } from 'antd'
 import { PushpinOutlined } from '@ant-design/icons'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import { RouteComponentProps, navigate } from '@/ability'
 import { usePersistFn } from '@/hooks'
 import { Highlight } from '@/components'
@@ -11,7 +11,7 @@ import { Highlight } from '@/components'
 import styles from './getting-started.module.less'
 
 const GettingStarted: FC<RouteComponentProps> = () => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
 
   const handleCreateProject = usePersistFn(() => {
     navigate('create-project')

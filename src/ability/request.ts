@@ -11,7 +11,7 @@ import { ResponseStructure, ErrorShowType } from '@/types'
 import { navigate } from '@/ability'
 
 export const request = <P extends {} = {}, R = any>(
-  context: string | QueryFunctionContext<[string, unknown]>,
+  context: string | QueryFunctionContext,
   init?: Omit<RequestInit, 'body'> & { body?: P } & { params?: P }
 ) => {
   let resource = context

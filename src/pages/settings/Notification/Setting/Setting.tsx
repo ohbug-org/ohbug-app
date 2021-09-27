@@ -1,9 +1,9 @@
 import { FC, useState, useEffect } from 'react'
 import { Form, Switch, Input, Space, Button, Table, Modal, message } from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { RouteComponentProps } from '@/ability'
 import type { NotificationSetting, NotificationSettingWebHook } from '@/types'
 import { Zone } from '@/components'
@@ -22,7 +22,7 @@ import EditWebhook from './EditWebhook'
 import styles from './Setting.module.less'
 
 const Setting: FC<RouteComponentProps> = () => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetSetting({ projectId: currentProject?.id })
   const { mutation: updateSettingMutation } = useUpdateSetting()
   const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()

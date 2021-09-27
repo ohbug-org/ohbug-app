@@ -1,32 +1,14 @@
-import { useSetRecoilState } from 'recoil'
-import { useQuery, useMutation } from 'react-query'
+import { useAtom } from 'jotai'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import dayjs from 'dayjs'
 
-import { projectsState, currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { Project } from '@/types'
 import { request } from '@/ability'
 
-export function useGetProjects() {
-  const { data, isLoading } = useQuery<Project[]>(`/projects`, {
-    suspense: false,
-  })
-  const setProjectsState = useSetRecoilState(projectsState)
-  const setCurrentProjectState = useSetRecoilState(currentProjectState)
-
-  if (data) {
-    setProjectsState(data)
-    setCurrentProjectState(data[0])
-  }
-
-  return {
-    data,
-    isLoading,
-  }
-}
-
 export function useGetProject(id: number) {
   const { data } = useQuery<Project>(`/projects/${id}`)
-  const setCurrentProjectState = useSetRecoilState(currentProjectState)
+  const [, setCurrentProjectState] = useAtom(currentProjectAtom)
 
   if (data) {
     setCurrentProjectState(data)
@@ -43,7 +25,7 @@ interface SwitchExtension {
   enabled: boolean
 }
 export function useSwitchExtension() {
-  const setCurrentProjectState = useSetRecoilState(currentProjectState)
+  const [, setCurrentProjectState] = useAtom(currentProjectAtom)
   const mutation = useMutation<Project, unknown, SwitchExtension>(
     (body) =>
       request<SwitchExtension, Project>(`/projects/switchExtension`, {
@@ -90,20 +72,19 @@ interface Create {
   type: string
 }
 export function useCreateProject() {
-  const setProjectsState = useSetRecoilState(projectsState)
-  const setCurrentProjectState = useSetRecoilState(currentProjectState)
+  const queryClient = useQueryClient()
+  const key = `/projects`
+  const [, setCurrentProjectState] = useAtom(currentProjectAtom)
   const mutation = useMutation<Project, unknown, Create>(
     (body) =>
-      request<Create, Project>(`/projects`, {
+      request<Create, Project>(key, {
         method: 'POST',
         body,
       }),
     {
       onSuccess(data) {
-        if (data) {
-          setProjectsState((prevData) => [...(prevData || []), data])
-          setCurrentProjectState(data)
-        }
+        setCurrentProjectState(data)
+        queryClient.invalidateQueries(key)
       },
     }
   )

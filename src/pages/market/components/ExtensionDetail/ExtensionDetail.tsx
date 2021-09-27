@@ -4,9 +4,9 @@ import { Card, Avatar, Switch, Typography } from 'antd'
 import MarkdownIt from 'markdown-it'
 import { GithubOutlined } from '@ant-design/icons'
 import type { Language } from 'prism-react-renderer'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import { useCreation, usePersistFn } from '@/hooks'
 import { Highlight } from '@/components'
 import { useGetExtension, useSwitchExtension } from '@/services'
@@ -35,7 +35,7 @@ const ExtensionDetailComponent: FC<ExtensionDetailProps> = ({ id }) => {
     () => extension && md.render(extension?.readme),
     [extension]
   )
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const enabled = useCreation(
     () => !!currentProject?.extensions?.find((v) => v.id === extension?.id),
     [currentProject, extension]

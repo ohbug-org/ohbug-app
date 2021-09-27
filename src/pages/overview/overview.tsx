@@ -1,9 +1,9 @@
 import { FC, Suspense } from 'react'
 import { Typography, Button, Spin } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState, projectsState } from '@/states'
+import { currentProjectAtom, projectsAtom } from '@/atoms'
 import { Layout } from '@/components'
 import { RouteComponentProps, navigate } from '@/ability'
 
@@ -16,8 +16,8 @@ function handleToCreateProject() {
 }
 
 const Overview: FC<RouteComponentProps> = () => {
-  const projects = useRecoilValue(projectsState)
-  const project = useRecoilValue(currentProjectState)
+  const [projects] = useAtom(projectsAtom)
+  const [project] = useAtom(currentProjectAtom)
 
   if (projects) {
     return (

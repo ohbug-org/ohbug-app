@@ -1,14 +1,14 @@
 import type { FC } from 'react'
 import { Card, Image } from 'antd'
 import clsx from 'clsx'
-import { useSetRecoilState } from 'recoil'
+import { useAtom } from 'jotai'
 
 import type { Project } from '@/types'
 import { usePersistFn } from '@/hooks'
 import { navigate } from '@/ability'
 import { MiniChart } from '@/components'
 import { useGetProjectTrend } from '@/services'
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 
 import styles from './ProjectCard.module.less'
 
@@ -20,7 +20,7 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
   const { data } = useGetProjectTrend(project.id!)
 
-  const setCurrentProjectState = useSetRecoilState(currentProjectState)
+  const [, setCurrentProjectState] = useAtom(currentProjectAtom)
   const handleToIssue = usePersistFn(() => {
     setCurrentProjectState(project)
     navigate(`/issue`)

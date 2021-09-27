@@ -1,9 +1,9 @@
 import { FC, useState } from 'react'
 import { Card, Space, List, Radio, Typography, Row, Col } from 'antd'
 import dayjs from 'dayjs'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import { RouteComponentProps, Link } from '@/ability'
 import { Layout, MiniChart, LineChart } from '@/components'
 import { usePersistFn } from '@/hooks'
@@ -22,7 +22,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
   ])
   const [currentType, setCurrentType] = useState<'all'>('all')
   const [period, setPeriod] = useState<'24h' | '14d'>('24h')
-  const project = useRecoilValue(currentProjectState)
+  const [project] = useAtom(currentProjectAtom)
 
   const { data: issues } = useGetIssues({
     projectId: project?.id,

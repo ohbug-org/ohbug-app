@@ -1,17 +1,18 @@
 import { FC, createElement, isValidElement } from 'react'
+import { useAtom } from 'jotai'
 
 import { Loading } from '@/components'
 import { RouteComponentProps, Redirect } from '@/ability'
-import { useGetProjects } from '@/services'
+import { currentProjectAtom } from '@/atoms'
 
 const Auth: FC<RouteComponentProps> = ({ children }) => {
-  const { data, isLoading } = useGetProjects()
+  const [currentProject] = useAtom(currentProjectAtom)
 
-  if (isLoading) {
+  if (!currentProject) {
     return createElement(Loading)
   }
 
-  if (data && isValidElement(children)) {
+  if (currentProject && isValidElement(children)) {
     return children
   }
 

@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { render } from 'react-dom'
-import { RecoilRoot } from 'recoil'
+import { Provider } from 'jotai'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ConfigProvider } from 'antd'
@@ -32,7 +32,6 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      // @ts-ignore
       queryFn: request,
       retry: 3,
     },
@@ -40,14 +39,14 @@ const queryClient = new QueryClient({
 })
 
 const App: FC = () => (
-  <RecoilRoot>
+  <Provider>
     <QueryClientProvider client={queryClient}>
       <ConfigProvider renderEmpty={renderEmpty} locale={locale}>
         <Router />
         <ReactQueryDevtools initialIsOpen={false} />
       </ConfigProvider>
     </QueryClientProvider>
-  </RecoilRoot>
+  </Provider>
 )
 
 render(<App />, document.querySelector('#root'))

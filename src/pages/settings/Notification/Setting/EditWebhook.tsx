@@ -8,9 +8,9 @@ import {
   RobotOutlined,
   WechatOutlined,
 } from '@ant-design/icons'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { NotificationSettingWebHook } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
 import { RadioIconButton } from '@/components'
@@ -50,7 +50,7 @@ const EditWebhook: FC<EditWebhookProps> = ({
   onCancel,
   initialValues,
 }) => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const { mutation: createWebhooksSettingMutation } = useCreateSettingWebhook()
   const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()
   const [form] = Form.useForm()

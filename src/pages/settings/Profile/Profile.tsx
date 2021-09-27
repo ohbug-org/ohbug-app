@@ -1,14 +1,14 @@
 import { FC } from 'react'
 import { Collapse, Typography } from 'antd'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import { Zone } from '@/components'
 
 import styles from './Profile.module.less'
 
 const Profile: FC = () => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
 
   return (
     <section className={styles.root}>

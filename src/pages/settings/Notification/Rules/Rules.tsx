@@ -1,9 +1,9 @@
 import { FC, useState } from 'react'
 import { Table, Tag, Switch, Button, Modal } from 'antd'
 import dayjs from 'dayjs'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 
-import { currentProjectState } from '@/states'
+import { currentProjectAtom } from '@/atoms'
 import type { RouteComponentProps } from '@/ability'
 import type { NotificationRule } from '@/types'
 import { Zone } from '@/components'
@@ -16,7 +16,7 @@ import styles from './Rules.module.less'
 import { useDeleteRule, useGetRules, useUpdateRule } from '@/services'
 
 const Rules: FC<RouteComponentProps> = () => {
-  const currentProject = useRecoilValue(currentProjectState)
+  const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetRules({ projectId: currentProject?.id })
   const { mutation: updateRuleMutation } = useUpdateRule()
   const { mutation: deleteRuleMutation } = useDeleteRule()
