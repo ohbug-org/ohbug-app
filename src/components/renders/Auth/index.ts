@@ -1,16 +1,18 @@
 import { FC, createElement, isValidElement } from 'react'
+import { useAtom } from 'jotai'
 
 import { Loading } from '@/components'
-import { RouteComponentProps, useModelEffect, Redirect } from '@/ability'
+import { RouteComponentProps, Redirect } from '@/ability'
+import { currentProjectAtom } from '@/atoms'
 
 const Auth: FC<RouteComponentProps> = ({ children }) => {
-  const { data, loading } = useModelEffect((dispatch) => dispatch.project.get)
+  const [currentProject] = useAtom(currentProjectAtom)
 
-  if (loading) {
+  if (!currentProject) {
     return createElement(Loading)
   }
 
-  if (data && isValidElement(children)) {
+  if (currentProject && isValidElement(children)) {
     return children
   }
 

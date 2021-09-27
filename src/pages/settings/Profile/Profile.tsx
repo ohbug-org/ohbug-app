@@ -1,13 +1,14 @@
 import { FC } from 'react'
 import { Collapse, Typography } from 'antd'
+import { useAtom } from 'jotai'
 
+import { currentProjectAtom } from '@/atoms'
 import { Zone } from '@/components'
-import { useModelState } from '@/ability'
 
 import styles from './Profile.module.less'
 
 const Profile: FC = () => {
-  const currentProject = useModelState((state) => state.project.current)
+  const [currentProject] = useAtom(currentProjectAtom)
 
   return (
     <section className={styles.root}>

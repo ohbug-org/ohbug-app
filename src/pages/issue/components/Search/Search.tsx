@@ -2,8 +2,7 @@ import type { FC } from 'react'
 import { Space, Tooltip, Select } from 'antd'
 import { types } from '@ohbug/core'
 
-import { usePersistFn } from 'ahooks'
-import { useModelEffect } from '@/ability'
+import { usePersistFn } from '@/hooks'
 
 import TimePicker from '../TimePicker'
 
@@ -18,16 +17,23 @@ const TYPE = [
   })),
 ]
 
-const Search: FC = () => {
-  const { run: searchIssues } = useModelEffect(
-    (dispatch) => dispatch.issue.searchIssues,
-    { manual: true }
-  )
+interface SearchProps {
+  handleSearch: (params: {
+    page?: number
+    start?: string
+    end?: string
+    type?: string
+  }) => void
+}
+
+const Search: FC<SearchProps> = ({ handleSearch }) => {
   const handleTypeSelected = usePersistFn((value) => {
     if (value === 'all') {
-      searchIssues({})
+      handleSearch({
+        type: 'all',
+      })
     } else {
-      searchIssues({
+      handleSearch({
         type: value,
       })
     }
@@ -47,7 +53,7 @@ const Search: FC = () => {
       </Space>
 
       <Tooltip title="根据 Issue 创建时间筛选">
-        <TimePicker />
+        <TimePicker handleSearch={handleSearch} />
       </Tooltip>
     </Space>
   )

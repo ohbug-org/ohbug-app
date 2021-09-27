@@ -2,8 +2,8 @@ import type { FC } from 'react'
 import { Row, Col, Skeleton, Typography, Card, Statistic } from 'antd'
 // import clsx from 'clsx';
 
-import type { EventState, IssueState } from '@/models'
 import { Image } from '@/components'
+import { EventInAPP, Issue } from '@/types'
 
 import styles from './Title.module.less'
 
@@ -21,8 +21,8 @@ import styles from './Title.module.less'
 // };
 
 interface TitleProps {
-  event: EventState['current']
-  issue: IssueState['current']
+  event?: EventInAPP<any>
+  issue?: Issue
 }
 const Title: FC<TitleProps> = ({ event, issue }) => {
   const leftLoading = !event

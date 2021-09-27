@@ -1,5 +1,5 @@
-import type { FC } from 'react'
-import { Card, Menu } from 'antd'
+import { FC, Suspense } from 'react'
+import { Card, Menu, Spin } from 'antd'
 
 import { RouteComponentProps, useLocation, navigate } from '@/ability'
 import { Layout } from '@/components'
@@ -76,7 +76,9 @@ const Settings: FC<RouteComponentProps> = ({ children }) => {
             navigate(item.path!, { replace: true })
           })}
         </Menu>
-        <section className={styles.container}>{children}</section>
+        <section className={styles.container}>
+          <Suspense fallback={<Spin />}>{children}</Suspense>
+        </section>
       </Card>
     </Layout>
   )

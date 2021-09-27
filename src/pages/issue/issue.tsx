@@ -1,63 +1,57 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { Card, Space, List, Radio, Typography, Row, Col } from 'antd'
 import dayjs from 'dayjs'
+import { useAtom } from 'jotai'
 
-import {
-  RouteComponentProps,
-  Link,
-  useModelEffect,
-  useModelState,
-} from '@/ability'
+import { currentProjectAtom } from '@/atoms'
+import { RouteComponentProps, Link } from '@/ability'
 import { Layout, MiniChart, LineChart } from '@/components'
 import { usePersistFn } from '@/hooks'
+import { useGetIssues, useGetIssuesTrend, useGetProjectTrend } from '@/services'
 
 import Search from './components/Search'
 
 import styles from './issue.module.less'
 
 const Issue: FC<RouteComponentProps> = ({ children }) => {
-  const {
-    data,
-    loading,
-    run: searchIssues,
-  } = useModelEffect((dispatch) => dispatch.issue.searchIssues, {
-    manual: true,
-  })
-  const { loading: trendChartLoading, run: getTrends } = useModelEffect(
-    (dispatch) => dispatch.issue.getTrends,
-    { manual: true }
-  )
-  const project = useModelState((state) => state.project.current)
-  const projectTrend = useModelState((state) => state.project.currentTrend)
-
-  useEffect(() => {
-    if (project) {
-      searchIssues({
-        projectId: project.id,
-        page: 0,
-      })
-    }
-    // eslint-disable-next-line
-  }, [project])
-
   const [currentPage, setCurrentPage] = useState(1)
-  const handleTablePaginationChange = usePersistFn((current) => {
-    if (project) {
-      setCurrentPage(current)
-      searchIssues({
-        projectId: project.id,
-        page: current - 1,
-      })
-    }
+  // 默认取近两周
+  const [range, setRange] = useState([
+    dayjs().subtract(13, 'day').startOf('day').toISOString(),
+    dayjs().startOf('day').toISOString(),
+  ])
+  const [currentType, setCurrentType] = useState<'all'>('all')
+  const [period, setPeriod] = useState<'24h' | '14d'>('24h')
+  const [project] = useAtom(currentProjectAtom)
+
+  const { data: issues } = useGetIssues({
+    projectId: project?.id,
+    page: currentPage - 1,
+    start: range[0],
+    end: range[1],
+    type: currentType === 'all' ? undefined : currentType,
+  })
+  const [data, count] = issues ?? []
+
+  const { data: projectTrend } = useGetProjectTrend(project?.id)
+  const { data: issuesTrend } = useGetIssuesTrend({
+    ids: data?.map((v) => v.id),
+    period,
   })
 
-  const [trendValue, setTrendValue] = useState<'24h' | '14d'>('24h')
   const handleTrendChange = usePersistFn((e) => {
-    const period = e.target.value
-    setTrendValue(period)
-
-    const ids = data?.data?.map((v) => v.id)!
-    getTrends({ ids, period })
+    setPeriod(e.target.value)
+  })
+  const handleSearch = usePersistFn(({ page, start, end, type }) => {
+    if (page) {
+      setCurrentPage(page)
+    }
+    if (start && end) {
+      setRange([start, end])
+    }
+    if (type) {
+      setCurrentType(type)
+    }
   })
 
   return (
@@ -71,22 +65,21 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
 
         <Card
           className={styles.card}
-          title={`问题列表 ${data?.data ? `(${data?.data.length})` : ''}`}
+          title={`问题列表 ${data ? `(${data.length})` : ''}`}
           hoverable
-          loading={loading}
-          extra={<Search />}
+          extra={<Search handleSearch={handleSearch} />}
         >
           <List
             className={styles.list}
             itemLayout="horizontal"
-            dataSource={data?.data}
+            dataSource={data}
             pagination={
-              data?.count
+              count
                 ? {
-                    onChange: handleTablePaginationChange,
+                    onChange: setCurrentPage,
                     pageSize: 20,
                     current: currentPage,
-                    total: data.count,
+                    total: count,
                   }
                 : false
             }
@@ -101,7 +94,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                     <span>趋势</span>
                     <span style={{ marginLeft: 4 }}>
                       <Radio.Group
-                        value={trendValue}
+                        value={period}
                         onChange={handleTrendChange}
                         size="small"
                         buttonStyle="solid"
@@ -115,7 +108,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
               </div>
             }
             renderItem={(item) => {
-              const chartData = data?.trend?.data?.find(
+              const chartData = issuesTrend?.find(
                 (v) => parseInt(v?.issueId, 10) === item.id
               )?.buckets
 
@@ -175,11 +168,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                       <Col span={4}>{item.usersCount}</Col>
 
                       <Col span={10}>
-                        <MiniChart
-                          data={chartData}
-                          trend={trendValue}
-                          loading={trendChartLoading}
-                        />
+                        <MiniChart data={chartData} trend={period} />
                       </Col>
                     </Row>
                   </List.Item>

@@ -1,9 +1,11 @@
-import type { FC } from 'react'
-import { Typography, Button } from 'antd'
+import { FC, Suspense } from 'react'
+import { Typography, Button, Spin } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { useAtom } from 'jotai'
 
+import { currentProjectAtom, projectsAtom } from '@/atoms'
 import { Layout } from '@/components'
-import { RouteComponentProps, navigate, useModelState } from '@/ability'
+import { RouteComponentProps, navigate } from '@/ability'
 
 import ProjectCard from './Components/ProjectCard'
 
@@ -14,8 +16,8 @@ function handleToCreateProject() {
 }
 
 const Overview: FC<RouteComponentProps> = () => {
-  const projects = useModelState((state) => state.project.data)
-  const project = useModelState((state) => state.project.current)
+  const [projects] = useAtom(projectsAtom)
+  const [project] = useAtom(currentProjectAtom)
 
   if (projects) {
     return (
@@ -33,7 +35,9 @@ const Overview: FC<RouteComponentProps> = () => {
         </div>
         <div className={styles.projects}>
           {projects.map((v) => (
-            <ProjectCard project={v} active={v.id === project?.id} key={v.id} />
+            <Suspense key={v.id} fallback={<Spin />}>
+              <ProjectCard project={v} active={v.id === project?.id} />
+            </Suspense>
           ))}
         </div>
       </Layout>

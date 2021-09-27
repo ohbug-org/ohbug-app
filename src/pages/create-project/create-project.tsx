@@ -3,13 +3,17 @@ import { Form, Input, Button, Select } from 'antd'
 
 import { Layout } from '@/components'
 import { usePersistFn } from '@/hooks'
-import { useModelDispatch } from '@/ability'
+import { navigate } from '@/ability'
+import { useCreateProject } from '@/services'
 
 import styles from './create-project.module.less'
 
 const CreateProject: FC = () => {
-  const create = useModelDispatch((dispatch) => dispatch.project.create)
-  const handleFinish = usePersistFn((values) => create(values))
+  const { mutation } = useCreateProject()
+  const handleFinish = usePersistFn(async (values) => {
+    await mutation.mutate(values)
+    navigate('/issue')
+  })
 
   return (
     <Layout className={styles.root}>

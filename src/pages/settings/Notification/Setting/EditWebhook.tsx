@@ -8,11 +8,18 @@ import {
   RobotOutlined,
   WechatOutlined,
 } from '@ant-design/icons'
+import { useAtom } from 'jotai'
 
-import { useModelEffect } from '@/ability'
+import { currentProjectAtom } from '@/atoms'
 import type { NotificationSettingWebHook } from '@/types'
 import { usePersistFn, useUpdateEffect } from '@/hooks'
 import { RadioIconButton } from '@/components'
+import {
+  CreateSettingWebhook,
+  UpdateSettingWebhook,
+  useCreateSettingWebhook,
+  useUpdateSettingWebhook,
+} from '@/services'
 
 import styles from './EditWebhook.module.less'
 
@@ -43,18 +50,14 @@ const EditWebhook: FC<EditWebhookProps> = ({
   onCancel,
   initialValues,
 }) => {
-  const { loading: createWebhooksSettingLoading, run: createWebhooksSetting } =
-    useModelEffect((dispatch) => dispatch.notification.createWebhooksSetting, {
-      manual: true,
-    })
-  const { loading: updateWebhooksSettingLoading, run: updateWebhooksSetting } =
-    useModelEffect((dispatch) => dispatch.notification.updateWebhooksSetting, {
-      manual: true,
-    })
+  const [currentProject] = useAtom(currentProjectAtom)
+  const { mutation: createWebhooksSettingMutation } = useCreateSettingWebhook()
+  const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()
   const [form] = Form.useForm()
   const [type, setType] = useState(() => (initialValues ? 'update' : 'create'))
   const confirmLoading =
-    createWebhooksSettingLoading || updateWebhooksSettingLoading
+    createWebhooksSettingMutation.isLoading ||
+    updateWebhooksSettingMutation.isLoading
 
   useUpdateEffect(() => {
     setType(initialValues ? 'update' : 'create')
@@ -69,22 +72,29 @@ const EditWebhook: FC<EditWebhookProps> = ({
   const handleOk = usePersistFn(() => {
     form.submit()
   })
-  const handleFinish = usePersistFn((value) => {
-    const payload = {
-      open: true,
-      ...value,
+  const handleFinish = usePersistFn(
+    (payload: CreateSettingWebhook | UpdateSettingWebhook) => {
+      if (currentProject) {
+        if (type === 'create') {
+          const value = payload as CreateSettingWebhook
+          createWebhooksSettingMutation.mutate({
+            projectId: currentProject.id,
+            open: true,
+            ...value,
+          })
+        }
+        if (type === 'update') {
+          const value = {
+            ...payload,
+            projectId: currentProject.id,
+            id: initialValues?.id,
+          } as UpdateSettingWebhook
+          updateWebhooksSettingMutation.mutate(value)
+        }
+        onCancel?.()
+      }
     }
-    if (type === 'update') {
-      payload.id = initialValues?.id
-    }
-    if (type === 'create') {
-      createWebhooksSetting(payload)
-    }
-    if (type === 'update') {
-      updateWebhooksSetting(payload)
-    }
-    onCancel?.()
-  })
+  )
 
   return (
     <Modal

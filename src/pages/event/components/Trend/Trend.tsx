@@ -1,43 +1,33 @@
-import { FC, useEffect } from 'react'
+import type { FC } from 'react'
 import { Card, Typography } from 'antd'
 import dayjs from 'dayjs'
 
-import { useModelEffect } from '@/ability'
-import type { IssueState } from '@/models'
+import type { Issue } from '@/types'
 import { MiniChart } from '@/components'
 import { useCreation } from '@/hooks'
 
 import styles from './Trend.module.less'
+import { useGetIssuesTrend } from '@/services'
 
 interface TrendProps {
-  issue: IssueState['current']
+  issue?: Issue
 }
 const Trend: FC<TrendProps> = ({ issue }) => {
-  const {
-    data,
-    loading,
-    run: getCurrentTrend,
-  } = useModelEffect((dispatch) => dispatch.issue.getCurrentTrend, {
-    manual: true,
+  const { data } = useGetIssuesTrend({
+    ids: issue ? [issue.id] : [],
+    period: 'all',
   })
+  const result = data?.[0]
 
-  useEffect(() => {
-    if (issue) {
-      const ids = [issue.id]
-      getCurrentTrend({ ids, period: 'all' })
-    }
-    // eslint-disable-next-line
-  }, [issue])
-
-  const data14d = useCreation(() => data?.current?.['14d']?.buckets, [data])
-  const data24h = useCreation(() => data?.current?.['24h']?.buckets, [data])
+  const data14d = useCreation(() => result?.['14d']?.buckets, [data])
+  const data24h = useCreation(() => result?.['24h']?.buckets, [data])
 
   return (
     <div className={styles.root}>
-      <Card className={styles.card} loading={loading}>
+      <Card className={styles.card}>
         {data14d && <MiniChart data={data14d} trend="14d" title="过去14天" />}
       </Card>
-      <Card className={styles.card} loading={loading}>
+      <Card className={styles.card}>
         {data24h && <MiniChart data={data24h} trend="24h" title="过去24小时" />}
       </Card>
 

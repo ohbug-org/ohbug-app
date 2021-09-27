@@ -1,8 +1,9 @@
 import { FC, useRef } from 'react'
+import { useAtom } from 'jotai'
 import type { OhbugEvent } from '@ohbug/types'
 
+import { currentProjectAtom } from '@/atoms'
 import { useCreation, useMount } from '@/hooks'
-import { useModelState } from '@/ability'
 
 import frameURL from './frame.html?url'
 
@@ -15,7 +16,7 @@ interface ExtensionUIProps {
 }
 
 const ExtensionUI: FC<ExtensionUIProps> = ({ extensionKey, data, event }) => {
-  const currentProject = useModelState((state) => state.project.current)
+  const [currentProject] = useAtom(currentProjectAtom)
   const extension = useCreation(
     () =>
       (currentProject?.extensions || []).find((v) => v.key === extensionKey),
