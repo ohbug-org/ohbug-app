@@ -238,7 +238,7 @@ const Setting: FC<RouteComponentProps> = () => {
           }
         >
           <Form.Item name="webhooks" valuePropName="dataSource">
-            <Table pagination={false} rowKey={(record) => record.id!}>
+            <Table pagination={false} rowKey="id">
               <Table.Column
                 title="名称"
                 width={500}

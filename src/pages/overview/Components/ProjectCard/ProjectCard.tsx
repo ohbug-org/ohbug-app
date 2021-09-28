@@ -40,7 +40,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
               src="/images/js.platform.png"
               preview={false}
             />
-            <span>{project.name}</span>
+            <span className="uppercase font-semibold">{project.name}</span>
           </div>
         </div>
       }

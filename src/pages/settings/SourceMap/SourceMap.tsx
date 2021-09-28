@@ -19,11 +19,7 @@ const SourceMapCompnent: FC<RouteComponentProps> = () => {
   return (
     <section className={styles.root}>
       <Zone title="SourceMap">
-        <Table<SourceMap>
-          dataSource={data}
-          rowKey={(record) => record.id!}
-          pagination={false}
-        >
+        <Table dataSource={data} rowKey="id" pagination={false}>
           <Table.Column<SourceMap>
             title="文件名"
             render={(item) => (

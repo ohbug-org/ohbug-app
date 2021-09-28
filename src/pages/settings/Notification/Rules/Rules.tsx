@@ -47,11 +47,7 @@ const Rules: FC<RouteComponentProps> = () => {
           </Button>
         }
       >
-        <Table<NotificationRule>
-          dataSource={data}
-          rowKey={(record) => record.id!}
-          pagination={false}
-        >
+        <Table dataSource={data} rowKey="id" pagination={false}>
           <Table.Column<NotificationRule>
             title="名称/规则"
             render={(item: NotificationRule) => (

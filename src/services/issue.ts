@@ -34,8 +34,8 @@ interface GetTrend {
 interface TrendData {
   issueId: string
   buckets: {
-    timestamp: string
-    count: number
+    name: string
+    y: number
   }[]
 }
 type Trend = TrendData & {
