@@ -27,10 +27,10 @@ interface SwitchExtension {
 export function useSwitchExtension() {
   const [, setCurrentProjectState] = useAtom(currentProjectAtom)
   const mutation = useMutation<Project, unknown, SwitchExtension>(
-    (body) =>
+    (data) =>
       request<SwitchExtension, Project>(`/projects/switchExtension`, {
         method: 'POST',
-        body,
+        data,
       }),
     {
       onSuccess(data) {
@@ -76,10 +76,10 @@ export function useCreateProject() {
   const key = `/projects`
   const [, setCurrentProjectState] = useAtom(currentProjectAtom)
   const mutation = useMutation<Project, unknown, Create>(
-    (body) =>
+    (data) =>
       request<Create, Project>(key, {
         method: 'POST',
-        body,
+        data,
       }),
     {
       onSuccess(data) {

@@ -10,10 +10,10 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 
-import { renderEmpty } from '@/components'
 import Router from '@/ability/router'
-import chartTheme from '@/styles/chart.json'
 import { request } from '@/ability/request'
+import { ErrorBoundary } from '@/components'
+import chartTheme from '@/styles/chart.json'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tailwindcss/tailwind.css'
@@ -39,14 +39,16 @@ const queryClient = new QueryClient({
 })
 
 const App: FC = () => (
-  <Provider>
-    <QueryClientProvider client={queryClient}>
-      <ConfigProvider renderEmpty={renderEmpty} locale={locale}>
-        <Router />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </ConfigProvider>
-    </QueryClientProvider>
-  </Provider>
+  <ErrorBoundary>
+    <Provider>
+      <QueryClientProvider client={queryClient}>
+        <ConfigProvider locale={locale}>
+          <Router />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </ConfigProvider>
+      </QueryClientProvider>
+    </Provider>
+  </ErrorBoundary>
 )
 
 render(<App />, document.querySelector('#root'))

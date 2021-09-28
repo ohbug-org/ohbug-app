@@ -21,7 +21,6 @@ export function useDeleteSourceMap() {
     (params) =>
       request<number, SourceMap>(`/sourceMap/${params.sourceMapId}`, {
         method: 'DELETE',
-        // @ts-ignore
         params: {
           apiKey: params.apiKey,
         },

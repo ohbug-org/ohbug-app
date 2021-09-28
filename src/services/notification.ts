@@ -42,10 +42,10 @@ export function useCreateRule() {
   const queryClient = useQueryClient()
   const key = `/notification/rules`
   const mutation = useMutation<NotificationRule, unknown, CreateRule>(
-    (body) =>
+    (data) =>
       request<CreateRule, NotificationRule>(key, {
         method: 'POST',
-        body,
+        data,
       }),
     {
       onSuccess() {
@@ -72,12 +72,12 @@ export interface UpdateRule extends Base {
 export function useUpdateRule() {
   const queryClient = useQueryClient()
   const mutation = useMutation<NotificationRule, unknown, UpdateRule>(
-    (body) =>
+    (data) =>
       request<UpdateRule, NotificationRule>(
-        `/notification/rules/${body.ruleId}`,
+        `/notification/rules/${data.ruleId}`,
         {
           method: 'PATCH',
-          body,
+          data,
         }
       ),
     {
@@ -140,10 +140,10 @@ export interface UpdateSetting extends Base {
 export function useUpdateSetting() {
   const queryClient = useQueryClient()
   const mutation = useMutation<NotificationSetting, unknown, UpdateSetting>(
-    (body) =>
+    (data) =>
       request<UpdateSetting, NotificationSetting>(`/notification/setting`, {
         method: 'PATCH',
-        body,
+        data,
       }),
     {
       onSuccess() {
@@ -171,12 +171,12 @@ export function useCreateSettingWebhook() {
     unknown,
     CreateSettingWebhook
   >(
-    (body) =>
+    (data) =>
       request<CreateSettingWebhook, NotificationSettingWebHook>(
         `/notification/setting/webhooks`,
         {
           method: 'POST',
-          body,
+          data,
         }
       ),
     {
@@ -201,12 +201,12 @@ export function useUpdateSettingWebhook() {
     unknown,
     UpdateSettingWebhook
   >(
-    (body) =>
+    (data) =>
       request<UpdateSettingWebhook, NotificationSettingWebHook>(
-        `/notification/setting/webhooks/${body.id}`,
+        `/notification/setting/webhooks/${data.id}`,
         {
           method: 'PATCH',
-          body,
+          data,
         }
       ),
     {
