@@ -118,8 +118,8 @@ const Profile: FC<ProfileProps> = ({ event }) => {
   const loading = !event
 
   return (
-    <div className="mb-3">
-      <div className="mb-3">
+    <div className="mb-4">
+      <div className="mb-4">
         <Cards event={event} />
       </div>
 

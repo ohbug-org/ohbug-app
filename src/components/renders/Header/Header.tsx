@@ -34,9 +34,9 @@ const Header: FC = () => {
             to={item.path}
             getProps={({ isPartiallyCurrent }) => ({
               className: clsx(
-                'inline-block h-full text-white text-opacity-60 px-4 border-t-2 border-transparent transition-all hover:text-opacity-100 hover:border-t-2 hover:border-primary',
+                'inline-block h-full text-white text-opacity-60 px-4 border-t-4 border-transparent transition-all hover:text-white hover:border-t-4 hover:border-primary',
                 {
-                  'text-opacity-100 border-t-2 border-primary text-primary':
+                  'text-opacity-100 border-t-4 border-primary':
                     isPartiallyCurrent,
                 }
               ),

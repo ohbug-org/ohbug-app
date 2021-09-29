@@ -74,7 +74,7 @@ const StackInfo: FC<StackInfoProps> = ({ stack, source }) => {
         </Radio.Button>
       </Radio.Group>
 
-      <pre className="mt-3 whitespace-pre-wrap break-words">{content}</pre>
+      <pre className="mt-4 whitespace-pre-wrap break-words">{content}</pre>
     </div>
   )
 }

@@ -120,7 +120,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                     <List.Item.Meta
                       title={
                         <div className="leading-tight truncate">
-                          <Typography.Text className="mr-3 text-base" strong>
+                          <Typography.Text className="mr-4 text-base" strong>
                             {item.type}
                           </Typography.Text>
                           {item.metadata.filename && (

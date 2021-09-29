@@ -24,7 +24,7 @@ const Market: FC<RouteComponentProps> = () => {
           {data?.[0]?.map((v) => (
             <Card
               className={clsx(
-                'mb-3 !border-0 !border-b-4 !border-solid border-transparent hover:!border-primary',
+                'mb-4 !border-0 !border-b-4 !border-solid border-transparent hover:!border-primary',
                 {
                   '!border-primary': v.id === currentId,
                 }

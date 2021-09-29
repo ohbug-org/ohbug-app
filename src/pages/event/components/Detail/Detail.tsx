@@ -16,7 +16,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
     <div>
       {/* all */}
       {event?.detail.message && (
-        <Card className="!mb-3" title="错误信息">
+        <Card className="!mb-4" title="错误信息">
           {typeof event.detail.message === 'string'
             ? event.detail.message
             : JSON.stringify(event.detail.message)}
@@ -25,13 +25,13 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* unhandledrejectionError */}
       {/* uncaughtError */}
       {event?.detail.stack && (
-        <Card className="!mb-3" title="堆栈信息">
+        <Card className="!mb-4" title="堆栈信息">
           <StackInfo stack={event.detail.stack} source={event?.source} />
         </Card>
       )}
       {/* resourceError */}
       {event?.detail.selector && (
-        <Card className="!mb-3">
+        <Card className="!mb-4">
           <Descriptions title="DOM 信息" column={1} size="small" bordered>
             <Descriptions.Item label="HTML">
               {event.detail.outerHTML}
@@ -61,7 +61,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* ajaxError */}
       {/* fetchError */}
       {event?.type === 'ajaxError' && (
-        <Card className="!mb-3">
+        <Card className="!mb-4">
           <Descriptions title="HTTP 信息" column={1} size="small" bordered>
             <Descriptions.Item label="method">
               {event.detail.req.method}
@@ -87,7 +87,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
       {/* websocketError */}
       {event?.type === 'websocketError' && (
-        <Card className="!mb-3">
+        <Card className="!mb-4">
           <Descriptions title="WebSocket 信息" column={1} size="small" bordered>
             <Descriptions.Item label="url">
               {event.detail.url}
@@ -115,7 +115,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
 
       {/* actions */}
-      <Card className="!mb-3" title="Actions 信息">
+      <Card className="!mb-4" title="Actions 信息">
         <Timeline className="overflow-auto pt-1" style={{ maxHeight: 400 }}>
           {event?.actions?.map((action) => {
             const { message, icon } = getMessageAndIconByActionType(action)

@@ -22,14 +22,14 @@ const Trend: FC<TrendProps> = ({ issue }) => {
 
   return (
     <div>
-      <Card className="mb-3">
+      <Card className="!mb-4">
         {data14d && <MiniChart data={data14d} trend="14d" title="过去14天" />}
       </Card>
-      <Card className="mb-3">
+      <Card className="!mb-4">
         {data24h && <MiniChart data={data24h} trend="24h" title="过去24小时" />}
       </Card>
 
-      <Card className="mb-3">
+      <Card className="!mb-4">
         <Typography.Title level={5}>首次发生</Typography.Title>
         <div>
           <Typography.Text type="secondary">
@@ -42,7 +42,7 @@ const Trend: FC<TrendProps> = ({ issue }) => {
           </Typography.Text>
         </div>
       </Card>
-      <Card className="mb-3">
+      <Card className="!mb-4">
         <Typography.Title level={5}>最近发生</Typography.Title>
         <div>
           <Typography.Text type="secondary">
