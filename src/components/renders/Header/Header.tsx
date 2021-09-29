@@ -9,8 +9,6 @@ import { Link, navigate } from '@/ability'
 
 import ProjectSelector from './ProjectSelector'
 
-import styles from './Header.module.less'
-
 function generateMenuItemData(data: Route[]): Route[] {
   return data
     .map((route) => {
@@ -26,15 +24,12 @@ const Header: FC = () => {
   const menuItemData = useCreation(() => generateMenuItemData(routes), [])
 
   return (
-    <div className={styles.root}>
-      <div className={styles.switch}>
-        <ProjectSelector />
-      </div>
+    <div className="flex-1 flex items-center justify-between overflow-hidden">
+      <ProjectSelector />
 
-      <div className={styles.menu}>
+      <div className="px-6 relative">
         {menuItemData.map((item) => (
           <Link
-            className={styles.item}
             key={item.redirect || item.path}
             to={item.path}
             getProps={({ isPartiallyCurrent }) => ({
@@ -63,6 +58,7 @@ const Header: FC = () => {
         </Tooltip>
         <Tooltip title="文档" placement="bottom">
           <Button
+            className="!text-white"
             type="link"
             icon={<ReadOutlined />}
             href="https://ohbug.net/docs"

@@ -5,8 +5,6 @@ import dayjs from 'dayjs'
 import type { Issue } from '@/types'
 import { MiniChart } from '@/components'
 import { useCreation } from '@/hooks'
-
-import styles from './Trend.module.less'
 import { useGetIssuesTrend } from '@/services'
 
 interface TrendProps {
@@ -23,15 +21,15 @@ const Trend: FC<TrendProps> = ({ issue }) => {
   const data24h = useCreation(() => result?.['24h']?.buckets, [data])
 
   return (
-    <div className={styles.root}>
-      <Card className={styles.card}>
+    <div>
+      <Card className="mb-3">
         {data14d && <MiniChart data={data14d} trend="14d" title="过去14天" />}
       </Card>
-      <Card className={styles.card}>
+      <Card className="mb-3">
         {data24h && <MiniChart data={data24h} trend="24h" title="过去24小时" />}
       </Card>
 
-      <Card className={styles.card}>
+      <Card className="mb-3">
         <Typography.Title level={5}>首次发生</Typography.Title>
         <div>
           <Typography.Text type="secondary">
@@ -44,7 +42,7 @@ const Trend: FC<TrendProps> = ({ issue }) => {
           </Typography.Text>
         </div>
       </Card>
-      <Card className={styles.card}>
+      <Card className="mb-3">
         <Typography.Title level={5}>最近发生</Typography.Title>
         <div>
           <Typography.Text type="secondary">

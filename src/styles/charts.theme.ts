@@ -4,17 +4,7 @@ Highcharts.theme = {
   credits: {
     enabled: false,
   },
-  colors: [
-    '#02b176',
-    '#50B432',
-    '#ED561B',
-    '#DDDF00',
-    '#24CBE5',
-    '#64E572',
-    '#FF9655',
-    '#FFF263',
-    '#6AF9C4',
-  ],
+  colors: ['var(--ant-primary-color)'],
   title: {
     text: undefined,
   },
@@ -42,6 +32,10 @@ Highcharts.theme = {
   },
   tooltip: {
     useHTML: true,
+    outside: true,
+    animation: false,
+    backgroundColor: 'white',
+    borderWidth: 0,
   },
 }
 Highcharts.setOptions(Highcharts.theme)

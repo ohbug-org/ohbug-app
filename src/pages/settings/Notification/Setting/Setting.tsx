@@ -19,8 +19,6 @@ import {
 
 import EditWebhook from './EditWebhook'
 
-import styles from './Setting.module.less'
-
 const Setting: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetSetting({ projectId: currentProject?.id })
@@ -101,7 +99,7 @@ const Setting: FC<RouteComponentProps> = () => {
   })
 
   return (
-    <section className={styles.root}>
+    <section>
       <EditWebhook
         visible={webhookModalVisible}
         onCancel={webhookModalOnCancel}
@@ -113,7 +111,7 @@ const Setting: FC<RouteComponentProps> = () => {
             {(fields, operation) => (
               <Space direction="vertical">
                 {fields.map((field, index) => (
-                  <div className={styles.emailLine} key={field.key}>
+                  <div className="flex" key={field.key}>
                     <Space
                       style={{ width: 500 }}
                       align="center"
@@ -121,6 +119,7 @@ const Setting: FC<RouteComponentProps> = () => {
                     >
                       <Form.Item
                         name={[field.name, 'email']}
+                        noStyle
                         hasFeedback
                         rules={[
                           { required: true, message: '请输入正确的邮箱格式' },
@@ -173,8 +172,9 @@ const Setting: FC<RouteComponentProps> = () => {
                       )}
                     </Space>
                     <Form.Item
-                      className={styles.emailSwitch}
+                      className="px-4"
                       name={[field.name, 'open']}
+                      noStyle
                       valuePropName="checked"
                       initialValue
                     >
@@ -203,11 +203,12 @@ const Setting: FC<RouteComponentProps> = () => {
 
         <Zone
           title={
-            <div className={styles.browserLine}>
+            <div className="flex">
               <div style={{ width: 500 }}>浏览器通知</div>
               <Form.Item
-                className={styles.browserSwitch}
+                className="m-0 mx-4"
                 name="browser"
+                noStyle
                 initialValue={false}
                 valuePropName="checked"
               >
@@ -227,7 +228,6 @@ const Setting: FC<RouteComponentProps> = () => {
           title="第三方通知"
           extra={
             <Button
-              className={styles.addWebhook}
               icon={<PlusCircleOutlined />}
               type="text"
               onClick={() => {
@@ -237,7 +237,7 @@ const Setting: FC<RouteComponentProps> = () => {
             />
           }
         >
-          <Form.Item name="webhooks" valuePropName="dataSource">
+          <Form.Item name="webhooks" valuePropName="dataSource" noStyle>
             <Table pagination={false} rowKey="id">
               <Table.Column
                 title="名称"
@@ -274,7 +274,7 @@ const Setting: FC<RouteComponentProps> = () => {
                 render={(item) => (
                   <span>
                     <Button
-                      className={styles.editButton}
+                      className="!text-primary"
                       type="text"
                       size="small"
                       onClick={() => {
@@ -285,8 +285,8 @@ const Setting: FC<RouteComponentProps> = () => {
                       修改
                     </Button>
                     <Button
-                      className={styles.deleteButton}
                       type="text"
+                      danger
                       size="small"
                       onClick={() => {
                         Modal.confirm({

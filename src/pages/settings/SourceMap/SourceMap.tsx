@@ -7,8 +7,6 @@ import { currentProjectAtom } from '@/atoms'
 import type { RouteComponentProps } from '@/ability'
 import type { SourceMap } from '@/types'
 import { Zone } from '@/components'
-
-import styles from './SourceMap.module.less'
 import { useDeleteSourceMap, useGetSourceMaps } from '@/services'
 
 const SourceMapCompnent: FC<RouteComponentProps> = () => {
@@ -17,7 +15,7 @@ const SourceMapCompnent: FC<RouteComponentProps> = () => {
   const { mutation } = useDeleteSourceMap()
 
   return (
-    <section className={styles.root}>
+    <section>
       <Zone title="SourceMap">
         <Table dataSource={data} rowKey="id" pagination={false}>
           <Table.Column<SourceMap>
@@ -51,8 +49,8 @@ const SourceMapCompnent: FC<RouteComponentProps> = () => {
             render={(item) => (
               <span>
                 <Button
-                  className={styles.deleteButton}
                   type="text"
+                  danger
                   size="small"
                   onClick={() => {
                     Modal.confirm({

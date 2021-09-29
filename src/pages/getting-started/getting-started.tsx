@@ -8,8 +8,6 @@ import { RouteComponentProps, navigate } from '@/ability'
 import { usePersistFn } from '@/hooks'
 import { Highlight } from '@/components'
 
-import styles from './getting-started.module.less'
-
 const GettingStarted: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
 
@@ -19,7 +17,10 @@ const GettingStarted: FC<RouteComponentProps> = () => {
 
   if (currentProject) {
     return (
-      <div className={styles.root}>
+      <div
+        className="flex flex-col items-center justify-center"
+        style={{ minHeight: 800 }}
+      >
         <div>
           <Typography.Title level={2}>接入 Ohbug SDK</Typography.Title>
 
@@ -50,10 +51,11 @@ Ohbug.init({ apiKey: '${currentProject?.apiKey}' })`}
   }
 
   return (
-    <div className={styles.root}>
-      <Typography className={styles.tips}>
-        点击开始 创建你的 Ohbug 专属服务
-      </Typography>
+    <div
+      className="flex flex-col items-center justify-center"
+      style={{ minHeight: 800 }}
+    >
+      <Typography className="mb-6">点击开始 创建你的 Ohbug 专属服务</Typography>
 
       <Button
         type="primary"

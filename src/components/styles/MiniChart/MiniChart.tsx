@@ -7,8 +7,8 @@ import dayjs from 'dayjs'
 import { useCreation } from '@/hooks'
 
 type Data = {
-  name: string
-  y: number
+  timestamp: string
+  count: number
 }
 interface MiniChartProps {
   trend: '24h' | '14d'
@@ -32,7 +32,10 @@ const MiniChart: FC<MiniChartProps> = memo(({ trend, data, title }) => {
       series: [
         {
           type: 'areaspline',
-          data,
+          data: data?.map((v) => ({
+            name: v.timestamp,
+            y: v.count,
+          })),
           lineWidth: 4,
           marker: {
             enabled: false,

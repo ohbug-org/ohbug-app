@@ -5,8 +5,6 @@ import { RouteComponentProps, useLocation, navigate } from '@/ability'
 import { Layout } from '@/components'
 import { useCreation } from '@/hooks'
 
-import styles from './settings.module.less'
-
 interface MenuItem {
   label: string
   key: string
@@ -64,21 +62,23 @@ const Settings: FC<RouteComponentProps> = ({ children }) => {
   }, [location])
 
   return (
-    <Layout className={styles.root}>
+    <Layout>
       <Card>
-        <Menu
-          className={styles.leftMenu}
-          selectedKeys={selectedKeys}
-          defaultOpenKeys={['notification']}
-          mode="inline"
-        >
-          {renderMenu(menuList, (item) => {
-            navigate(item.path!, { replace: true })
-          })}
-        </Menu>
-        <section className={styles.container}>
-          <Suspense fallback={<Spin />}>{children}</Suspense>
-        </section>
+        <div className="flex justify-between pt-6">
+          <Menu
+            style={{ width: 220 }}
+            selectedKeys={selectedKeys}
+            defaultOpenKeys={['notification']}
+            mode="inline"
+          >
+            {renderMenu(menuList, (item) => {
+              navigate(item.path!, { replace: true })
+            })}
+          </Menu>
+          <section className="flex-1 px-12">
+            <Suspense fallback={<Spin />}>{children}</Suspense>
+          </section>
+        </div>
       </Card>
     </Layout>
   )

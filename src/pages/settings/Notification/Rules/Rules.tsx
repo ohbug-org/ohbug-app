@@ -8,12 +8,10 @@ import type { RouteComponentProps } from '@/ability'
 import type { NotificationRule } from '@/types'
 import { Zone } from '@/components'
 import { useBoolean } from '@/hooks'
+import { useDeleteRule, useGetRules, useUpdateRule } from '@/services'
 
 import EditRule from './EditRule'
 import { levelList } from './Rules.core'
-
-import styles from './Rules.module.less'
-import { useDeleteRule, useGetRules, useUpdateRule } from '@/services'
 
 const Rules: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
@@ -28,7 +26,7 @@ const Rules: FC<RouteComponentProps> = () => {
   const [currentSwitch, setCurrentSwitch] = useState<number>()
 
   return (
-    <section className={styles.root}>
+    <section>
       <EditRule
         visible={modalVisible}
         onCancel={modalOnCancel}
@@ -100,7 +98,7 @@ const Rules: FC<RouteComponentProps> = () => {
             render={(item: NotificationRule) => (
               <span>
                 <Button
-                  className={styles.editButton}
+                  className="!text-primary"
                   type="text"
                   size="small"
                   onClick={() => {
@@ -111,8 +109,8 @@ const Rules: FC<RouteComponentProps> = () => {
                   修改
                 </Button>
                 <Button
-                  className={styles.deleteButton}
                   type="text"
+                  danger
                   size="small"
                   onClick={() => {
                     Modal.confirm({

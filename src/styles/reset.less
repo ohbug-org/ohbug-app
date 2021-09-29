@@ -1,10 +1,9 @@
 :root {
-  --primary-color: @primary-color;
-  --success-color: @success-color;
-  --info-color: @info-color;
-  --warning-color: @warning-color;
-  --error-color: @error-color;
-  --text-color-secondary: @text-color-secondary;
+  --ant-primary-color: @primary-color;
+  --ant-success-color: @success-color;
+  --ant-info-color: @info-color;
+  --ant-warning-color: @warning-color;
+  --ant-error-color: @error-color;
 }
 #root {
   @apply min-h-screen;
@@ -38,9 +37,9 @@ img {
     }
   }
   &-badge-status-processing {
-    @apply bg-primary !important;
+    @apply !bg-primary;
     &::after {
-      @apply border-primary !important;
+      @apply !border-primary;
     }
   }
   &-form-item-explain,
@@ -51,10 +50,10 @@ img {
     @apply relative;
   }
   &-table-thead > tr > th {
-    @apply font-semibold !important;
+    @apply !font-semibold;
   }
   &-menu {
-    @apply bg-transparent border-none !important;
+    @apply !bg-transparent !border-none;
     &-item {
       &::after {
         border-bottom-width: 3px !important;

@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import dayjs from 'dayjs'
 
 import { currentProjectAtom } from '@/atoms'
-import type { Project } from '@/types'
+import type { Project, ProjectTrend } from '@/types'
 import { request } from '@/ability'
 
 export function useGetProject(id: number) {
@@ -46,19 +46,16 @@ export function useSwitchExtension() {
   }
 }
 
-export function useGetProjectTrend(id?: number) {
-  const start = dayjs()
-    .subtract(13, 'day')
-    .startOf('day')
-    .toISOString() as unknown as Date
-  const end = dayjs().startOf('day').toISOString() as unknown as Date
-  const { data } = useQuery<any>(
+const initialStart = dayjs().subtract(13, 'day').toISOString()
+const initialEnd = dayjs().toISOString()
+export function useGetProjectTrend(id?: number, start?: string, end?: string) {
+  const { data } = useQuery<ProjectTrend>(
     [
       `/projects/trend`,
       {
         projectId: id,
-        start,
-        end,
+        start: start ?? initialStart,
+        end: end ?? initialEnd,
       },
     ],
     { enabled: !!id }

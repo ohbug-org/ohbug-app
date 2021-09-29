@@ -8,17 +8,15 @@ import type { EventInAPP } from '@/types'
 import StackInfo from '../StackInfo'
 import { getMessageAndIconByActionType } from './core'
 
-import styles from './Detail.module.less'
-
 interface DetailProps {
   event?: EventInAPP<any>
 }
 const Detail: FC<DetailProps> = ({ event }) => {
   return (
-    <div className={styles.root}>
+    <div>
       {/* all */}
       {event?.detail.message && (
-        <Card className={styles.descriptions} title="错误信息">
+        <Card className="!mb-3" title="错误信息">
           {typeof event.detail.message === 'string'
             ? event.detail.message
             : JSON.stringify(event.detail.message)}
@@ -27,13 +25,13 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* unhandledrejectionError */}
       {/* uncaughtError */}
       {event?.detail.stack && (
-        <Card className={styles.descriptions} title="堆栈信息">
+        <Card className="!mb-3" title="堆栈信息">
           <StackInfo stack={event.detail.stack} source={event?.source} />
         </Card>
       )}
       {/* resourceError */}
       {event?.detail.selector && (
-        <Card className={styles.descriptions}>
+        <Card className="!mb-3">
           <Descriptions title="DOM 信息" column={1} size="small" bordered>
             <Descriptions.Item label="HTML">
               {event.detail.outerHTML}
@@ -63,7 +61,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       {/* ajaxError */}
       {/* fetchError */}
       {event?.type === 'ajaxError' && (
-        <Card className={styles.descriptions}>
+        <Card className="!mb-3">
           <Descriptions title="HTTP 信息" column={1} size="small" bordered>
             <Descriptions.Item label="method">
               {event.detail.req.method}
@@ -89,7 +87,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
       {/* websocketError */}
       {event?.type === 'websocketError' && (
-        <Card className={styles.descriptions}>
+        <Card className="!mb-3">
           <Descriptions title="WebSocket 信息" column={1} size="small" bordered>
             <Descriptions.Item label="url">
               {event.detail.url}
@@ -117,19 +115,21 @@ const Detail: FC<DetailProps> = ({ event }) => {
       )}
 
       {/* actions */}
-      <Card className={styles.descriptions} title="Actions 信息">
-        <Timeline className={styles.actions}>
+      <Card className="!mb-3" title="Actions 信息">
+        <Timeline className="overflow-auto pt-1" style={{ maxHeight: 400 }}>
           {event?.actions?.map((action) => {
             const { message, icon } = getMessageAndIconByActionType(action)
             return (
               <Timeline.Item key={action.timestamp + action.data} dot={icon}>
-                <div className={styles.action}>
-                  <div className={styles.type}>{action.type}</div>
-                  <div className={styles.data}>{message}</div>
+                <div className="flex justify-between">
+                  <div className="font-bold" style={{ width: 106 }}>
+                    {action.type}
+                  </div>
+                  <div className="flex-1 text-secondary">{message}</div>
                   <Tooltip
                     title={dayjs(event.timestamp).format('YYYY-MM-DD HH:mm:ss')}
                   >
-                    <div className={styles.time}>
+                    <div className="w-20 text-secondary">
                       {dayjs(event.timestamp).format('HH:mm:ss')}
                     </div>
                   </Tooltip>
@@ -139,9 +139,11 @@ const Detail: FC<DetailProps> = ({ event }) => {
           })}
           {event && (
             <Timeline.Item dot={<WarningOutlined />} color="red">
-              <div className={styles.action}>
-                <div className={styles.type}>exception</div>
-                <div className={styles.data}>
+              <div className="flex justify-between">
+                <div className="font-bold" style={{ width: 106 }}>
+                  exception
+                </div>
+                <div className="flex-1 text-secondary">
                   {typeof event.detail.message === 'string'
                     ? event.detail.message
                     : JSON.stringify(event.detail.message)}
@@ -149,7 +151,7 @@ const Detail: FC<DetailProps> = ({ event }) => {
                 <Tooltip
                   title={dayjs(event.timestamp).format('YYYY-MM-DD HH:mm:ss')}
                 >
-                  <div className={styles.time}>
+                  <div className="w-20 text-secondary">
                     {dayjs(event.timestamp).format('HH:mm:ss')}
                   </div>
                 </Tooltip>

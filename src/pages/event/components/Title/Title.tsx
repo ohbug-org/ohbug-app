@@ -5,16 +5,14 @@ import { Row, Col, Skeleton, Typography, Card, Statistic } from 'antd'
 import { Image } from '@/components'
 import { EventInAPP, Issue } from '@/types'
 
-import styles from './Title.module.less'
-
 // interface TrendProps {
 //   data: number;
 // }
 // const Trend: FC<TrendProps> = ({ data }) => {
 //   const type = data <= 0 ? 'down' : 'up';
-//   const classes = clsx(styles.trend, {
-//     [styles.up]: type === 'up',
-//     [styles.down]: type === 'down',
+//   const classes = clsx('w-12 h-12 font-semibold text-sm leading-10 text-center rounded-md', {
+//     'text-primary bg-primary bg-opacity-60': type === 'up',
+//     'text-success bg-primary bg-opacity-20 text-success bg-green-100: type === 'down',
 //   });
 //   const value = `${type === 'up' ? '+' : ''}${data * 100}%`;
 //   return <div className={classes}>{value}</div>;
@@ -28,11 +26,14 @@ const Title: FC<TitleProps> = ({ event, issue }) => {
   const leftLoading = !event
   const rightLoading = !issue
   return (
-    <Row className={styles.root} gutter={24}>
-      <Col className={styles.left} xs={24} sm={24} md={18}>
-        <div className={styles.wrapper}>
+    <Row gutter={24}>
+      <Col xs={24} sm={24} md={18}>
+        <div className="relative w-full h-48 rounded-md bg-primary">
           <Skeleton loading={leftLoading}>
-            <Typography className={styles.content}>
+            <Typography
+              className="absolute top-0 z-20 w-5/12 h-full text-white flex flex-col justify-center"
+              style={{ left: '6%' }}
+            >
               <Typography.Title>{event?.type}</Typography.Title>
               {event?.detail?.message && (
                 <Typography.Text ellipsis strong style={{ fontSize: 16 }}>
@@ -48,7 +49,8 @@ const Title: FC<TitleProps> = ({ event, issue }) => {
               )}
             </Typography>
             <Image
-              className={styles.figure}
+              className="absolute bottom-0 z-10 w-3/12 max-w-md"
+              style={{ right: '12%' }}
               src="/images/issue_title_figure.svg"
               alt="issue_title_figure"
             />
@@ -56,10 +58,15 @@ const Title: FC<TitleProps> = ({ event, issue }) => {
         </div>
       </Col>
 
-      <Col className={styles.right} xs={24} sm={24} md={6}>
+      <Col
+        className="!flex flex-col items-center justify-between"
+        xs={24}
+        sm={24}
+        md={6}
+      >
         <Skeleton loading={rightLoading}>
           <Card size="small" style={{ width: '100%' }}>
-            <div className={styles.countCard}>
+            <div className="p-0 flex items-center justify-between">
               <Statistic title="EVENTS" value={issue?.eventsCount} />
               {/* <Trend data={0.15} /> */}
             </div>
@@ -67,7 +74,7 @@ const Title: FC<TitleProps> = ({ event, issue }) => {
         </Skeleton>
         <Skeleton loading={rightLoading}>
           <Card size="small" style={{ width: '100%' }}>
-            <div className={styles.countCard}>
+            <div className="p-0 flex items-center justify-between">
               <Statistic title="USERS" value={issue?.usersCount} />
               {/* <Trend data={-0.04} /> */}
             </div>

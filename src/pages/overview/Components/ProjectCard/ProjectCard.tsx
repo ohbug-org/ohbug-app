@@ -29,11 +29,11 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
   return (
     <Card
       className={clsx(styles.root, {
-        [styles.active]: active,
+        '!bg-green-900': active,
       })}
       hoverable
       title={
-        <div className={styles.title}>
+        <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Image
               className="!w-8 mr-3"
@@ -46,7 +46,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, active }) => {
       }
       onClick={handleToIssue}
     >
-      <div className={styles.wrapper}>
+      <div className="mt-4 px-6 py-12">
         <MiniChart trend="14d" data={data.buckets} />
       </div>
     </Card>

@@ -6,8 +6,6 @@ import { usePersistFn } from '@/hooks'
 
 import TimePicker from '../TimePicker'
 
-import styles from './Search.module.less'
-
 const TYPE = [
   { label: 'ALL', value: 'all' },
   ...Object.keys(types).map((key) => ({
@@ -40,7 +38,7 @@ const Search: FC<SearchProps> = ({ handleSearch }) => {
   })
 
   return (
-    <Space className={styles.root} size="middle">
+    <Space size="middle">
       <Space>
         <Tooltip title="根据 Issue 类型筛选">
           <Select

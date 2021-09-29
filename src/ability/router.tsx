@@ -46,7 +46,7 @@ const Container: FC = ({ children }) => {
       <Wrapper>
         <Layout>
           {!(route?.layout?.hideNav === true) && (
-            <Layout.Header className="w-full fixed top-0 z-50 backdrop-filter backdrop-blur shadow-sm bg-opacity-90">
+            <Layout.Header className="w-full fixed top-0 z-50 backdrop-filter backdrop-blur shadow-xl !bg-gray-900 !bg-opacity-60">
               <Header />
             </Layout.Header>
           )}

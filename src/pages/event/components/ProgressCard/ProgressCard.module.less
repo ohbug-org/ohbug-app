@@ -22,30 +22,8 @@
     min-width: @card-width;
     height: @card-height;
     @apply overflow-hidden;
-
-    .content {
-      @apply flex flex-col justify-around float-left h-full px-5 py-1;
-
-      .title {
-        @apply m-0 text-base;
-      }
-      .description {
-        @apply text-xs;
-      }
-    }
     .progress {
-      @apply relative float-right h-full text-sm flex items-center justify-center text-black bg-gray-300;
       width: @progress-width;
-      &.white {
-        @apply text-white;
-      }
-
-      .line {
-        @apply absolute bottom-0 z-10 w-full bg-primary;
-      }
-      .number {
-        @apply z-20;
-      }
     }
   }
 }

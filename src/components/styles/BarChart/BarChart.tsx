@@ -6,15 +6,15 @@ import HighchartsReact from 'highcharts-react-official'
 import { useCreation } from '@/hooks'
 
 type Data = {
-  name: number
-  y: number
+  timestamp: string
+  count: number
 }
-interface LineChartProps {
+interface BarChartProps {
   data?: Data[]
   title?: string
 }
 
-const LineChart: FC<LineChartProps> = memo(({ data, title }) => {
+const BarChart: FC<BarChartProps> = memo(({ data, title }) => {
   const options = useCreation<Options>(
     () => ({
       chart: {
@@ -22,14 +22,27 @@ const LineChart: FC<LineChartProps> = memo(({ data, title }) => {
         spacingTop: 10,
         spacingBottom: 25,
       },
+      colors: ['#6e7373'],
       xAxis: {
-        categories: data?.map((v) => v.name.toString()),
+        categories: data?.map((v) => v.timestamp),
       },
       series: [
         {
-          type: 'areaspline',
-          data,
+          type: 'column',
+          data: data?.map((v) => ({
+            name: v.timestamp,
+            y: v.count,
+          })),
+          groupPadding: 0.05,
           lineWidth: 4,
+          borderWidth: 0,
+          cursor: 'pointer',
+          states: {
+            hover: {
+              animation: false,
+              color: 'var(--ant-primary-color)',
+            },
+          },
           tooltip: {
             headerFormat: '',
             pointFormatter() {
@@ -56,6 +69,6 @@ const LineChart: FC<LineChartProps> = memo(({ data, title }) => {
   )
 })
 
-LineChart.displayName = 'LineChart'
+BarChart.displayName = 'BarChart'
 
-export default LineChart
+export default BarChart

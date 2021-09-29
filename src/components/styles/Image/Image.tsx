@@ -1,8 +1,6 @@
 import type { FC, CSSProperties, MouseEvent as IMouseEvent } from 'react'
 import clsx from 'clsx'
 
-import styles from './Image.module.less'
-
 interface ImageProps {
   src: string
   alt: string
@@ -19,12 +17,12 @@ const Image: FC<ImageProps> = ({
   center,
   ...args
 }) => {
-  const classes = clsx(styles.root, className, {
-    [styles.center]: center,
+  const classes = clsx(className, {
+    'flex items-center justify-center': center,
   })
   return (
     <div className={classes} style={style} role="img" {...args}>
-      <img src={src} alt={alt} />
+      <img className="block w-full" src={src} alt={alt} />
     </div>
   )
 }

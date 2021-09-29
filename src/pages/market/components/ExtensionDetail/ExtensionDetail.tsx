@@ -11,8 +11,6 @@ import { useCreation, usePersistFn } from '@/hooks'
 import { Highlight } from '@/components'
 import { useGetExtension, useSwitchExtension } from '@/services'
 
-import styles from './ExtensionDetail.module.less'
-
 interface ExtensionDetailProps {
   id?: number
 }
@@ -54,22 +52,24 @@ const ExtensionDetailComponent: FC<ExtensionDetailProps> = ({ id }) => {
   })
 
   return (
-    <Card className={styles.root}>
+    <Card>
       {extension ? (
         <>
-          <div className={styles.profile}>
+          <div className="flex items-center justify-between mb-12">
             <div>
               <a
-                className={styles.line}
+                className="flex items-center"
                 href={extension?.repository.url}
                 target="_blank"
                 rel="noreferrer"
               >
-                <GithubOutlined />
+                <GithubOutlined className="w-8 mr-2" />
                 <span>{extension?.repository.url}</span>
               </a>
-              <div className={styles.line}>
-                <Avatar src={extension?.logo} />
+              <div className="flex items-center">
+                <div className="w-8 mr-2">
+                  <Avatar src={extension?.logo} />
+                </div>
                 {extension?.author}
               </div>
             </div>
@@ -84,7 +84,6 @@ const ExtensionDetailComponent: FC<ExtensionDetailProps> = ({ id }) => {
 
           {html && (
             <div
-              className={styles.container}
               // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{ __html: html }}
             />
