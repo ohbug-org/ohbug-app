@@ -45,11 +45,7 @@ const Container: FC = ({ children }) => {
     <Suspense fallback={<Loading />}>
       <Wrapper>
         <Layout>
-          {!(route?.layout?.hideNav === true) && (
-            <Layout.Header className="w-full fixed top-0 z-50 backdrop-filter backdrop-blur shadow-xl !bg-gray-900 !bg-opacity-60">
-              <Header />
-            </Layout.Header>
-          )}
+          {!(route?.layout?.hideNav === true) && <Header />}
           <Suspense fallback={<Loading />}>
             <Layout.Content style={{ paddingTop: 60 }}>
               {children}

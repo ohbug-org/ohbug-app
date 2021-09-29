@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Button, Space, Tooltip } from 'antd'
+import { Layout, Button, Space, Tooltip } from 'antd'
 import { ReadOutlined, SettingOutlined } from '@ant-design/icons'
 import clsx from 'clsx'
 
@@ -24,7 +24,7 @@ const Header: FC = () => {
   const menuItemData = useCreation(() => generateMenuItemData(routes), [])
 
   return (
-    <div className="flex-1 flex items-center justify-between overflow-hidden">
+    <Layout.Header className="w-full fixed top-0 z-50 shadow-xl backdrop-filter backdrop-blur !bg-gray-900 !bg-opacity-60 flex items-center justify-between overflow-hidden">
       <ProjectSelector />
 
       <div className="px-6 relative">
@@ -66,7 +66,7 @@ const Header: FC = () => {
           />
         </Tooltip>
       </Space>
-    </div>
+    </Layout.Header>
   )
 }
 

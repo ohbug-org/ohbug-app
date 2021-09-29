@@ -5,6 +5,13 @@
   --ant-warning-color: @warning-color;
   --ant-error-color: @error-color;
 }
+::-webkit-scrollbar {
+  width: 6px;
+  background: none;
+}
+::-webkit-scrollbar-thumb {
+  @apply backdrop-filter backdrop-blur bg-gray-500 bg-opacity-60 rounded-md;
+}
 #root {
   @apply min-h-screen;
   & > section {
