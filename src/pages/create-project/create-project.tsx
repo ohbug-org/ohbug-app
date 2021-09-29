@@ -6,8 +6,6 @@ import { usePersistFn } from '@/hooks'
 import { navigate } from '@/ability'
 import { useCreateProject } from '@/services'
 
-import styles from './create-project.module.less'
-
 const CreateProject: FC = () => {
   const { mutation } = useCreateProject()
   const handleFinish = usePersistFn(async (values) => {
@@ -16,8 +14,18 @@ const CreateProject: FC = () => {
   })
 
   return (
-    <Layout className={styles.root}>
-      <Form className={styles.form} onFinish={handleFinish} hideRequiredMark>
+    <Layout
+      className="flex flex-col items-center justify-center"
+      style={{ minHeight: 800 }}
+    >
+      <Form
+        style={{
+          minWidth: 320,
+          maxWidth: 400,
+        }}
+        onFinish={handleFinish}
+        hideRequiredMark
+      >
         <Form.Item
           label="项目名称"
           name="name"

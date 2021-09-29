@@ -5,13 +5,11 @@ import { useAtom } from 'jotai'
 import { currentProjectAtom } from '@/atoms'
 import { Zone } from '@/components'
 
-import styles from './Profile.module.less'
-
 const Profile: FC = () => {
   const [currentProject] = useAtom(currentProjectAtom)
 
   return (
-    <section className={styles.root}>
+    <section>
       <Zone title="Profile">
         <Collapse defaultActiveKey={['name', 'type']}>
           <Collapse.Panel header="项目名称" key="name">

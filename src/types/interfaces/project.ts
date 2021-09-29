@@ -2,9 +2,8 @@ import type { Extension } from './extension'
 import type { NotificationRule, NotificationSetting } from './notification'
 
 export interface ProjectTrend {
-  'event.apiKey': string
   buckets: {
-    timestamp: number
+    timestamp: string
     count: number
   }[]
 }

@@ -9,8 +9,6 @@ import { RouteComponentProps, navigate } from '@/ability'
 
 import ProjectCard from './Components/ProjectCard'
 
-import styles from './overview.module.less'
-
 function handleToCreateProject() {
   navigate('/create-project')
 }
@@ -21,8 +19,8 @@ const Overview: FC<RouteComponentProps> = () => {
 
   if (projects) {
     return (
-      <Layout className={styles.root}>
-        <div className={styles.head}>
+      <Layout>
+        <div className="pb-6 flex justify-between">
           <Typography.Title level={5}>项目总览</Typography.Title>
           <Button
             className="text-secondary"
@@ -33,7 +31,7 @@ const Overview: FC<RouteComponentProps> = () => {
             创建项目
           </Button>
         </div>
-        <div className={styles.projects}>
+        <div className="grid grid-cols-2">
           {projects.map((v) => (
             <Suspense key={v.id} fallback={<Spin />}>
               <ProjectCard project={v} active={v.id === project?.id} />

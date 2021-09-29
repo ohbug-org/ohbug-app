@@ -5,7 +5,7 @@ import { useAtom } from 'jotai'
 
 import { currentProjectAtom } from '@/atoms'
 import { RouteComponentProps, Link } from '@/ability'
-import { Layout, MiniChart, LineChart } from '@/components'
+import { Layout, MiniChart, BarChart } from '@/components'
 import { usePersistFn } from '@/hooks'
 import { useGetIssues, useGetIssuesTrend, useGetProjectTrend } from '@/services'
 
@@ -13,13 +13,14 @@ import Search from './components/Search'
 
 import styles from './issue.module.less'
 
+const twoWeeks = [
+  dayjs().subtract(13, 'day').toISOString(),
+  dayjs().toISOString(),
+]
 const Issue: FC<RouteComponentProps> = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1)
   // 默认取近两周
-  const [range, setRange] = useState([
-    dayjs().subtract(13, 'day').startOf('day').toISOString(),
-    dayjs().startOf('day').toISOString(),
-  ])
+  const [range, setRange] = useState(twoWeeks)
   const [currentType, setCurrentType] = useState<'all'>('all')
   const [period, setPeriod] = useState<'24h' | '14d'>('24h')
   const [project] = useAtom(currentProjectAtom)
@@ -33,7 +34,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
   })
   const [data, count] = issues ?? []
 
-  const { data: projectTrend } = useGetProjectTrend(project?.id)
+  const { data: projectTrend } = useGetProjectTrend(project?.id, ...range)
   const { data: issuesTrend } = useGetIssuesTrend({
     ids: data?.map((v) => v.id),
     period,
@@ -58,8 +59,8 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
     <Layout className={styles.root}>
       <Space size="middle" direction="vertical" style={{ width: '100%' }}>
         {projectTrend && (
-          <Card className={styles.chart}>
-            <LineChart data={projectTrend.buckets} />
+          <Card>
+            <BarChart data={projectTrend.buckets} />
           </Card>
         )}
 
@@ -84,9 +85,9 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                 : false
             }
             header={
-              <div className={styles.header}>
-                <div className={styles.title}>异常信息</div>
-                <Row className={styles.content} gutter={8}>
+              <div className="px-6 pt-6 font-bold flex items-center justify-between">
+                <div className="flex-1">异常信息</div>
+                <Row style={{ minWidth: 600 }} gutter={8}>
                   <Col span={6}>时间</Col>
                   <Col span={4}>异常数</Col>
                   <Col span={4}>影响用户数</Col>
@@ -118,8 +119,8 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                   <List.Item>
                     <List.Item.Meta
                       title={
-                        <div className={styles.title}>
-                          <Typography.Text className={styles.type} strong>
+                        <div className="leading-tight truncate">
+                          <Typography.Text className="mr-4 text-base" strong>
                             {item.type}
                           </Typography.Text>
                           {item.metadata.filename && (
@@ -130,7 +131,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                         </div>
                       }
                       description={
-                        <Typography.Paragraph className={styles.desc} ellipsis>
+                        <Typography.Paragraph className="!mb-0" ellipsis>
                           {item.metadata.message && (
                             <Typography.Text>
                               {typeof item.metadata.message === 'string'
@@ -155,17 +156,19 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
                         </Typography.Paragraph>
                       }
                     />
-                    <Row className={styles.content} gutter={8}>
-                      <Col span={6}>
+                    <Row style={{ minWidth: 600 }} gutter={8}>
+                      <Col className="!flex items-center" span={6}>
                         {dayjs(item.createdAt).fromNow()}-
                         {dayjs(item.updatedAt).fromNow()}
                       </Col>
 
-                      <Col className="text-error" span={4}>
+                      <Col className="text-error !flex items-center" span={4}>
                         {item.eventsCount}
                       </Col>
 
-                      <Col span={4}>{item.usersCount}</Col>
+                      <Col className="!flex items-center" span={4}>
+                        {item.usersCount}
+                      </Col>
 
                       <Col span={10}>
                         <MiniChart data={chartData} trend={period} />

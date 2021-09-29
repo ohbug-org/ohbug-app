@@ -20,29 +20,36 @@ const ProgressCard: FC<ProgressCardProps> = ({
 }) => {
   const progressStyles = useCreation(
     () =>
-      clsx(styles.progress, {
-        [styles.white]: percent && percent >= 60,
-      }),
+      clsx(
+        styles.progress,
+        'relative float-right h-full text-sm flex items-center justify-center text-black bg-gray-300',
+        {
+          'text-white': percent && percent >= 60,
+        }
+      ),
     [percent]
   )
 
   return (
     <Card className={styles.root}>
       <div className={styles.container}>
-        <div className={styles.content}>
-          {icon && <div className={styles.icon}>{icon}</div>}
-          <Typography.Title className={styles.title} level={4}>
+        <div className="flex flex-col justify-around float-left h-full px-5 py-1">
+          {icon && <div>{icon}</div>}
+          <Typography.Title className="!m-0" level={5}>
             {title}
           </Typography.Title>
-          <Typography.Text className={styles.description} type="secondary">
+          <Typography.Text className="text-xs" type="secondary">
             {description}
           </Typography.Text>
         </div>
 
         {percent && (
           <div className={progressStyles}>
-            <div className={styles.line} style={{ height: `${percent}%` }} />
-            <span className={styles.number}>{percent}%</span>
+            <div
+              className="absolute bottom-0 z-10 w-full bg-primary"
+              style={{ height: `${percent}%` }}
+            />
+            <span className="z-20">{percent}%</span>
           </div>
         )}
       </div>

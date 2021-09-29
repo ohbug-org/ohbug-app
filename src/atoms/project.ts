@@ -12,7 +12,7 @@ export const projectsAtom = atomWithQuery<Project[], any>(() => ({
 
 const projectAtom = atomWithStorage<Project | null>('project', null)
 export const currentProjectAtom = atom<Project, Project>(
-  async (get) => (await get(projectAtom)) || (await get(projectsAtom))[0],
+  async (get) => (await get(projectAtom)) || (await get(projectsAtom))?.[0],
   (_, set, newData) => {
     set(projectAtom, newData)
   }

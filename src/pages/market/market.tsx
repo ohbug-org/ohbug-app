@@ -9,8 +9,6 @@ import { useGetExtensions } from '@/services'
 
 import ExtensionDetail from './components/ExtensionDetail'
 
-import styles from './market.module.less'
-
 const Market: FC<RouteComponentProps> = () => {
   const [currentId, setCurrentId] = useState<number>()
   const { data } = useGetExtensions()
@@ -20,14 +18,17 @@ const Market: FC<RouteComponentProps> = () => {
   })
 
   return (
-    <Layout className={styles.root}>
+    <Layout>
       <Row gutter={24}>
-        <Col className={styles.extensions} span={6}>
+        <Col span={6}>
           {data?.[0]?.map((v) => (
             <Card
-              className={clsx(styles.extension, {
-                [styles.current]: v.id === currentId,
-              })}
+              className={clsx(
+                'mb-4 !border-0 !border-b-4 !border-solid border-transparent hover:!border-primary',
+                {
+                  '!border-primary': v.id === currentId,
+                }
+              )}
               onClick={() => handleSelectExtension(v.id!)}
               hoverable
               key={v.key}
@@ -40,7 +41,7 @@ const Market: FC<RouteComponentProps> = () => {
             </Card>
           ))}
         </Col>
-        <Col className={styles['extension-detail']} span={18}>
+        <Col className="flex-1" span={18}>
           <Suspense fallback={<Spin />}>
             <ExtensionDetail id={currentId} />
           </Suspense>

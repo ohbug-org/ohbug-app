@@ -3,7 +3,6 @@ import path from 'path'
 import { defineConfig, UserConfig } from 'vite'
 import reactJsx from 'vite-react-jsx'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import vitePluginImp from 'vite-plugin-imp'
 import visualizer from 'rollup-plugin-visualizer'
 
 import pkg from './package.json'
@@ -40,7 +39,7 @@ export default defineConfig(({ mode }) => {
             react: ['react'],
             'react-dom': ['react-dom'],
             antd: ['antd'],
-            echarts: ['echarts'],
+            highcharts: ['highcharts'],
             'markdown-it': ['markdown-it'],
           },
         },
@@ -60,16 +59,6 @@ export default defineConfig(({ mode }) => {
   }
   if (mode === 'production') {
     if (config.plugins) {
-      config.plugins.push(
-        vitePluginImp({
-          libList: [
-            {
-              libName: 'antd',
-              style: (name) => `antd/es/${name}/style`,
-            },
-          ],
-        })
-      )
       config.plugins.push(
         visualizer({
           filename: './node_modules/.cache/visualizer/stats.html',

@@ -3,85 +3,77 @@
  * 根据服务端返回的 showType 自动展示对应的提示
  */
 import type { QueryFunctionContext } from 'react-query'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message, notification } from 'antd'
-import qs from 'query-string'
 
 import { ResponseStructure, ErrorShowType } from '@/types'
 
 import { navigate } from '@/ability'
 
+axios.defaults.baseURL = `/api/v1`
+axios.defaults.timeout = 10000
+
 export const request = <P extends {} = {}, R = any>(
   context: string | QueryFunctionContext,
-  init?: Omit<RequestInit, 'body'> & { body?: P } & { params?: P }
+  config?: AxiosRequestConfig
 ) => {
   let resource = context
-  let params: Record<string, any>
+  let params: P | undefined
   if (typeof context === 'object' && Array.isArray(context.queryKey)) {
     // @ts-ignore
     ;[resource, params] = context.queryKey
   }
-  if (init?.params) {
-    params = init.params
+  if (config?.params) {
+    params = config.params
   }
-  const baseURL = '/api/v1'
-  // @ts-ignore
-  const url = params
-    ? `${baseURL}${resource}?${qs.stringify(params, { arrayFormat: 'index' })}`
-    : `${baseURL}${resource}`
 
-  const controller = new AbortController()
-  const { signal } = controller
+  const cancelToken = axios.CancelToken
+  const source = cancelToken.source()
 
-  const promise = fetch(url, {
-    ...init,
-    body: JSON.stringify(init?.body),
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-    },
-    signal,
+  const promise = axios(resource as string, {
+    ...config,
+    params: { ...config?.params, ...params },
+    cancelToken: source.token,
+  }).then((response: AxiosResponse<ResponseStructure<R>>) => {
+    const result = response.data
+    if (result.success && typeof result.data !== 'undefined') {
+      return result.data as R
+    }
+    if (result) {
+      const { errorMessage, errorCode } = result
+      const msg =
+        errorCode !== undefined
+          ? `[${errorCode}]: ${errorMessage}`
+          : errorMessage
+      switch (result.showType) {
+        case ErrorShowType.SILENT:
+          break
+        case ErrorShowType.WARN_MESSAGE:
+          message.warn(msg)
+          break
+        case ErrorShowType.ERROR_MESSAGE:
+          message.error(msg)
+          break
+        case ErrorShowType.NOTIFICATION:
+          notification.open({
+            message: msg,
+          })
+          break
+        case ErrorShowType.REDIRECT:
+          navigate('/403', { state: errorCode })
+          break
+        default:
+          message.error(msg)
+          break
+      }
+    }
+
+    message.error('Request error, please retry.')
+    throw new Error(result.errorMessage)
   })
-    .then((res) => res.json())
-    .then((result: ResponseStructure<R>) => {
-      if (result.success && typeof result.data !== 'undefined') {
-        return result.data as R
-      }
-      if (result) {
-        const { errorMessage, errorCode } = result
-        const msg =
-          errorCode !== undefined
-            ? `[${errorCode}]: ${errorMessage}`
-            : errorMessage
-        switch (result.showType) {
-          case ErrorShowType.SILENT:
-            break
-          case ErrorShowType.WARN_MESSAGE:
-            message.warn(msg)
-            break
-          case ErrorShowType.ERROR_MESSAGE:
-            message.error(msg)
-            break
-          case ErrorShowType.NOTIFICATION:
-            notification.open({
-              message: msg,
-            })
-            break
-          case ErrorShowType.REDIRECT:
-            navigate('/403', { state: errorCode })
-            break
-          default:
-            message.error(msg)
-            break
-        }
-      } else {
-        message.error('Request error, please retry.')
-      }
-
-      // @ts-ignore
-      throw new Error(result)
-    })
 
   // @ts-ignore
-  promise.cancel = () => controller.abort()
+  promise.cancel = () => source.cancel('Query was cancelled by React Query')
 
   return promise
 }

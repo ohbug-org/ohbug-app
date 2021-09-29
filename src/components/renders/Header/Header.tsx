@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Button, Space, Tooltip } from 'antd'
+import { Layout, Button, Space, Tooltip } from 'antd'
 import { ReadOutlined, SettingOutlined } from '@ant-design/icons'
 import clsx from 'clsx'
 
@@ -8,8 +8,6 @@ import { useCreation } from '@/hooks'
 import { Link, navigate } from '@/ability'
 
 import ProjectSelector from './ProjectSelector'
-
-import styles from './Header.module.less'
 
 function generateMenuItemData(data: Route[]): Route[] {
   return data
@@ -26,22 +24,19 @@ const Header: FC = () => {
   const menuItemData = useCreation(() => generateMenuItemData(routes), [])
 
   return (
-    <div className={styles.root}>
-      <div className={styles.switch}>
-        <ProjectSelector />
-      </div>
+    <Layout.Header className="w-full fixed top-0 z-50 shadow-xl backdrop-filter backdrop-blur !bg-gray-900 !bg-opacity-60 flex items-center justify-between overflow-hidden">
+      <ProjectSelector />
 
-      <div className={styles.menu}>
+      <div className="px-6 relative">
         {menuItemData.map((item) => (
           <Link
-            className={styles.item}
             key={item.redirect || item.path}
             to={item.path}
             getProps={({ isPartiallyCurrent }) => ({
               className: clsx(
-                'inline-block h-full text-black text-opacity-60 px-4 border-t-2 border-transparent transition-all hover:text-opacity-100 hover:border-t-2 hover:border-primary',
+                'inline-block h-full text-white text-opacity-60 px-4 border-t-4 border-transparent transition-all hover:text-white hover:border-t-4 hover:border-primary',
                 {
-                  'text-opacity-100 border-t-2 border-primary':
+                  'text-opacity-100 border-t-4 border-primary':
                     isPartiallyCurrent,
                 }
               ),
@@ -63,6 +58,7 @@ const Header: FC = () => {
         </Tooltip>
         <Tooltip title="文档" placement="bottom">
           <Button
+            className="!text-white"
             type="link"
             icon={<ReadOutlined />}
             href="https://ohbug.net/docs"
@@ -70,7 +66,7 @@ const Header: FC = () => {
           />
         </Tooltip>
       </Space>
-    </div>
+    </Layout.Header>
   )
 }
 

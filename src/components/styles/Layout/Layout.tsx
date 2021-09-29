@@ -1,19 +1,17 @@
-import type { FC } from 'react'
+import type { FC, CSSProperties } from 'react'
 import { Layout } from 'antd'
 import clsx from 'clsx'
 
 import { useBoolean, usePersistFn, useMount } from '@/hooks'
 
-import styles from './Layout.module.less'
-
 const { Content } = Layout
 
 interface BasicLayoutProps {
   className?: string
+  style?: CSSProperties
 }
 
-const BasicLayout: FC<BasicLayoutProps> = ({ children, className }) => {
-  const classes = clsx(styles.content, className)
+const BasicLayout: FC<BasicLayoutProps> = ({ children, className, style }) => {
   const [isTop, { toggle: toggleIsTop }] = useBoolean(true)
 
   const handleScroll = usePersistFn(() => {
@@ -33,8 +31,11 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, className }) => {
   })
 
   return (
-    <Layout className={styles.root}>
-      <Content className={classes}>{children}</Content>
+    <Layout
+      className="relative"
+      style={{ ...style, minHeight: `calc(100vh - 100px)` }}
+    >
+      <Content className={clsx(className, 'p-6')}>{children}</Content>
     </Layout>
   )
 }

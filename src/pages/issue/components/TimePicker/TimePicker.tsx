@@ -15,10 +15,7 @@ interface TimePickerProps {
 }
 
 const today: [Dayjs, Dayjs] = [dayjs().subtract(23, 'hour'), dayjs()]
-const twoWeeks: [Dayjs, Dayjs] = [
-  dayjs().subtract(13, 'day').startOf('day'),
-  dayjs().startOf('day'),
-]
+const twoWeeks: [Dayjs, Dayjs] = [dayjs().subtract(13, 'day'), dayjs()]
 
 const TimePicker: FC<TimePickerProps> = ({ handleSearch }) => {
   const handleTimeChange = usePersistFn(

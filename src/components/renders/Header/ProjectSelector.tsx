@@ -34,7 +34,7 @@ const ProjectSelector: FC = () => {
         onClick={() => toggle(true)}
       >
         <MenuOutlined />
-        <span className="ml-2">{project?.name}</span>
+        <span className="ml-2 uppercase font-semibold">{project?.name}</span>
       </div>
       <Drawer
         placement="left"
@@ -61,7 +61,9 @@ const ProjectSelector: FC = () => {
             onSelect={handleProjectChange}
           >
             {projects?.map((v) => (
-              <Menu.Item key={v?.id}>{v.name}</Menu.Item>
+              <Menu.Item className="uppercase font-semibold" key={v?.id}>
+                {v.name}
+              </Menu.Item>
             ))}
           </Menu>
         ) : (

@@ -21,8 +21,6 @@ import {
   useUpdateSettingWebhook,
 } from '@/services'
 
-import styles from './EditWebhook.module.less'
-
 const typeList = [
   {
     label: '钉钉',
@@ -98,7 +96,6 @@ const EditWebhook: FC<EditWebhookProps> = ({
 
   return (
     <Modal
-      className={styles.root}
       title="编辑第三方通知"
       visible={visible}
       onOk={handleOk}
@@ -121,7 +118,10 @@ const EditWebhook: FC<EditWebhookProps> = ({
           initialValue="dingtalk"
           noStyle
         >
-          <RadioIconButton className={styles.type} dataSource={typeList} />
+          <RadioIconButton
+            className="!flex items-center justify-center !mb-6"
+            dataSource={typeList}
+          />
         </Form.Item>
 
         <Form.Item

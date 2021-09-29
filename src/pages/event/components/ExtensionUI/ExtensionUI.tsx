@@ -7,8 +7,6 @@ import { useCreation, useMount } from '@/hooks'
 
 import frameURL from './frame.html?url'
 
-import styles from './ExtensionUI.module.less'
-
 interface ExtensionUIProps {
   data: any
   extensionKey: string
@@ -35,7 +33,8 @@ const ExtensionUI: FC<ExtensionUIProps> = ({ extensionKey, data, event }) => {
 
   return (
     <iframe
-      className={styles.frame}
+      className="w-full"
+      style={{ minHeight: '55vh' }}
       ref={ref}
       title="ohbug-event-iframe"
       src={frameURL}

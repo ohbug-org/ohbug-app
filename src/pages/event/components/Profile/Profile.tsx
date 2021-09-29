@@ -19,8 +19,6 @@ import { useCreation } from '@/hooks'
 import Cards from './components/Cards'
 import TooltipTags from './components/TooltipTags'
 
-import styles from './Profile.module.less'
-
 interface ProfileProps {
   event?: EventInAPP<any>
 }
@@ -120,23 +118,21 @@ const Profile: FC<ProfileProps> = ({ event }) => {
   const loading = !event
 
   return (
-    <div className={styles.root}>
-      <div className={styles.progressBox}>
+    <div className="mb-4">
+      <div className="mb-4">
         <Cards event={event} />
       </div>
 
-      <div className={styles.tagsBox}>
-        <Skeleton loading={loading}>
-          {tooltipTagsList.map((item) => (
-            <TooltipTags
-              key={item.key}
-              title={item.title}
-              value={item.value}
-              icon={item.icon}
-            />
-          ))}
-        </Skeleton>
-      </div>
+      <Skeleton loading={loading}>
+        {tooltipTagsList.map((item) => (
+          <TooltipTags
+            key={item.key}
+            title={item.title}
+            value={item.value}
+            icon={item.icon}
+          />
+        ))}
+      </Skeleton>
     </div>
   )
 }

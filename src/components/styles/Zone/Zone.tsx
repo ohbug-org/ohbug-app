@@ -1,8 +1,6 @@
 import type { FC, ReactNode } from 'react'
 import clsx from 'clsx'
 
-import styles from './Zone.module.less'
-
 interface ZoneProps {
   className?: string
   title?: ReactNode
@@ -17,15 +15,17 @@ const Zone: FC<ZoneProps> = ({
   children,
   type = 'normal',
 }) => {
-  const classes = clsx(className, styles.root)
-  const titleClasses = clsx(styles.title, {
-    [styles.danger]: type === 'danger',
-  })
-  const containerClasses = clsx(styles.container, {
-    [styles.danger]: type === 'danger',
+  const titleClasses = clsx(
+    'font-normal text-2xl flex items-center justify-between',
+    {
+      'm-0 font-semibold border-b-0 text-red-500': type === 'danger',
+    }
+  )
+  const containerClasses = clsx('rounded-md', {
+    'border-2 border-solid border-red-500': type === 'danger',
   })
   return (
-    <section className={classes}>
+    <section className={clsx(className, 'mb-6')}>
       <h2 className={titleClasses}>
         {title}
         {extra}
