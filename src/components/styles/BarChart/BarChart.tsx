@@ -47,7 +47,7 @@ const BarChart: FC<BarChartProps> = memo(({ data, title }) => {
             headerFormat: '',
             pointFormatter() {
               const { name, y } = this
-              return `<div style="text-align: center">${name}<br/><b>${y}</b> issues</div>`
+              return `<div style="text-align: center">${name}<br/><b>${y}</b> events</div>`
             },
           },
         },

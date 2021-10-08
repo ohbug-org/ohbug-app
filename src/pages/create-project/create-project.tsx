@@ -7,7 +7,7 @@ import { navigate } from '@/ability'
 import { useCreateProject } from '@/services'
 
 const CreateProject: FC = () => {
-  const { mutation } = useCreateProject()
+  const mutation = useCreateProject()
   const handleFinish = usePersistFn(async (values) => {
     await mutation.mutate(values)
     navigate('/issue')

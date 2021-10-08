@@ -33,7 +33,6 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
     type: currentType === 'all' ? undefined : currentType,
   })
   const [data, count] = issues ?? []
-
   const { data: projectTrend } = useGetProjectTrend(project?.id, ...range)
   const { data: issuesTrend } = useGetIssuesTrend({
     ids: data?.map((v) => v.id),
@@ -60,7 +59,7 @@ const Issue: FC<RouteComponentProps> = ({ children }) => {
       <Space size="middle" direction="vertical" style={{ width: '100%' }}>
         {projectTrend && (
           <Card>
-            <BarChart data={projectTrend.buckets} />
+            <BarChart data={projectTrend?.buckets} />
           </Card>
         )}
 

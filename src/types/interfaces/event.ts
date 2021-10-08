@@ -4,13 +4,15 @@ import type { Result } from 'source-map-trace/dist/interfaces'
 export type OhbugEventLike = OhbugEvent<any>
 
 export type { OhbugUser }
-interface Document {
-  id: string
-  index: string
+
+export interface EventWithNeighbor<T> extends OhbugEvent<T> {
+  previous: { id: number }
+  next: { id: number }
 }
+
 export interface EventInAPP<T> extends OhbugEvent<T> {
   // source
   source?: Result
-  next?: Document
-  previous?: Document
+  next?: { id: number }
+  previous?: { id: number }
 }

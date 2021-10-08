@@ -4,11 +4,9 @@ import { request } from '@/ability'
 import type { SourceMap } from '@/types'
 
 export function useGetSourceMaps(apiKey?: string) {
-  const { data } = useQuery<SourceMap[]>([`/sourceMap`, { apiKey }], {
+  return useQuery<SourceMap[]>([`/sourceMap`, { apiKey }], {
     enabled: !!apiKey,
   })
-
-  return { data }
 }
 
 interface DeleteSourceMap {
@@ -17,7 +15,7 @@ interface DeleteSourceMap {
 }
 export function useDeleteSourceMap() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<SourceMap, unknown, DeleteSourceMap>(
+  return useMutation<SourceMap, unknown, DeleteSourceMap>(
     (params) =>
       request<number, SourceMap>(`/sourceMap/${params.sourceMapId}`, {
         method: 'DELETE',
@@ -31,8 +29,4 @@ export function useDeleteSourceMap() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }

@@ -39,7 +39,7 @@ const ExtensionDetailComponent: FC<ExtensionDetailProps> = ({ id }) => {
     [currentProject, extension]
   )
 
-  const { mutation } = useSwitchExtension()
+  const mutation = useSwitchExtension()
 
   const handleSwitch = usePersistFn((checked) => {
     if (currentProject?.id && extension) {

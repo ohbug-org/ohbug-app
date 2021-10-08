@@ -16,8 +16,8 @@ import { levelList } from './Rules.core'
 const Rules: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetRules({ projectId: currentProject?.id })
-  const { mutation: updateRuleMutation } = useUpdateRule()
-  const { mutation: deleteRuleMutation } = useDeleteRule()
+  const updateRuleMutation = useUpdateRule()
+  const deleteRuleMutation = useDeleteRule()
   const [modalVisible, { setTrue: modalShow, setFalse: modalOnCancel }] =
     useBoolean(false)
   const [currentRule, setCurrentRule] = useState<NotificationRule | undefined>(

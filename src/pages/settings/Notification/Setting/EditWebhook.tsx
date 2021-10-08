@@ -49,8 +49,8 @@ const EditWebhook: FC<EditWebhookProps> = ({
   initialValues,
 }) => {
   const [currentProject] = useAtom(currentProjectAtom)
-  const { mutation: createWebhooksSettingMutation } = useCreateSettingWebhook()
-  const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()
+  const createWebhooksSettingMutation = useCreateSettingWebhook()
+  const updateWebhooksSettingMutation = useUpdateSettingWebhook()
   const [form] = Form.useForm()
   const [type, setType] = useState(() => (initialValues ? 'update' : 'create'))
   const confirmLoading =

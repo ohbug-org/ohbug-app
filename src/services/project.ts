@@ -26,7 +26,7 @@ interface SwitchExtension {
 }
 export function useSwitchExtension() {
   const [, setCurrentProjectState] = useAtom(currentProjectAtom)
-  const mutation = useMutation<Project, unknown, SwitchExtension>(
+  return useMutation<Project, unknown, SwitchExtension>(
     (data) =>
       request<SwitchExtension, Project>(`/projects/switchExtension`, {
         method: 'POST',
@@ -40,16 +40,12 @@ export function useSwitchExtension() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 const initialStart = dayjs().subtract(13, 'day').toISOString()
 const initialEnd = dayjs().toISOString()
 export function useGetProjectTrend(id?: number, start?: string, end?: string) {
-  const { data } = useQuery<ProjectTrend>(
+  return useQuery<ProjectTrend>(
     [
       `/projects/trend`,
       {
@@ -60,8 +56,6 @@ export function useGetProjectTrend(id?: number, start?: string, end?: string) {
     ],
     { enabled: !!id }
   )
-
-  return { data }
 }
 
 interface Create {
@@ -72,7 +66,7 @@ export function useCreateProject() {
   const queryClient = useQueryClient()
   const key = `/projects`
   const [, setCurrentProjectState] = useAtom(currentProjectAtom)
-  const mutation = useMutation<Project, unknown, Create>(
+  return useMutation<Project, unknown, Create>(
     (data) =>
       request<Create, Project>(key, {
         method: 'POST',
@@ -85,8 +79,4 @@ export function useCreateProject() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
