@@ -3,10 +3,15 @@ import { useAtom } from 'jotai'
 
 import { Loading } from '@/components'
 import { RouteComponentProps, Redirect } from '@/ability'
-import { currentProjectAtom } from '@/atoms'
+import { userAtom, currentProjectAtom } from '@/atoms'
 
 const Auth: FC<RouteComponentProps> = ({ children }) => {
+  const [user] = useAtom(userAtom)
   const [currentProject] = useAtom(currentProjectAtom)
+
+  if (!user) {
+    return createElement(Redirect, { to: '/login' })
+  }
 
   if (!currentProject) {
     return createElement(Loading)
