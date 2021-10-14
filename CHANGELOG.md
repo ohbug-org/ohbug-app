@@ -1,3 +1,16 @@
+# [0.4.0](https://github.com/ohbug-org/ohbug-app/compare/0.3.0...0.4.0) (2021-10-14)
+
+### Features
+
+- echarts 切换至 highcharts ([53f6560](https://github.com/ohbug-org/ohbug-app/commit/53f6560ccd6be56105c6ab7a3c83538f3a23f9fc))
+- 使用 axios 替代 fetch 发送请求, 根组件加入 ErrorBoundary ([71da5ae](https://github.com/ohbug-org/ohbug-app/commit/71da5aecda1a22a29d21d83308b85bdbfa6099d4))
+- 完成登录以及更新密码功能 ([1a784b4](https://github.com/ohbug-org/ohbug-app/commit/1a784b4ef2427c1aa662f175c121646db60bf6c1))
+- 样式优化 ([e4250e0](https://github.com/ohbug-org/ohbug-app/commit/e4250e07f2f24815f6dcfb0d96cf1332291ee971))
+- 样式重构使用 inlinecss 代替 modulecss, 减小 css 打包体积 ([b1914e2](https://github.com/ohbug-org/ohbug-app/commit/b1914e2f0cd4bdb311f2808419dd21f1304a3cda))
+- 状态管理与 api 管理切换至 recoil 与 react-query ([075cd71](https://github.com/ohbug-org/ohbug-app/commit/075cd715ad9ed117fbc4bd40af9eaf6ad26fa0da))
+- 状态管理使用与 react-query 更加契合的 jotai ([5fcabb2](https://github.com/ohbug-org/ohbug-app/commit/5fcabb2bf83be28d7504594080cb7a00baf9046d))
+- 调整滚动条样式 ([d45d958](https://github.com/ohbug-org/ohbug-app/commit/d45d958b0e349523d36e0e02c5cc70a770669586))
+
 # [0.3.0](https://github.com/ohbug-org/ohbug-app/compare/0.2.1...0.3.0) (2021-09-17)
 
 ### Features
