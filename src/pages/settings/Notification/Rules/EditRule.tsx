@@ -76,8 +76,8 @@ function getRuleDataType(
 }
 const EditRule: FC<EditRuleProps> = ({ visible, onCancel, initialValues }) => {
   const [currentProject] = useAtom(currentProjectAtom)
-  const { mutation: createRuleMutation } = useCreateRule()
-  const { mutation: updateRuleMutation } = useUpdateRule()
+  const createRuleMutation = useCreateRule()
+  const updateRuleMutation = useUpdateRule()
   const [form] = Form.useForm<CreateRule>()
   const [data, setData] = useState<'indicator' | 'range'>(
     getRuleDataType(initialValues) || 'range'

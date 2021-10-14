@@ -12,7 +12,7 @@ import { useDeleteSourceMap, useGetSourceMaps } from '@/services'
 const SourceMapCompnent: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetSourceMaps(currentProject?.apiKey)
-  const { mutation } = useDeleteSourceMap()
+  const mutation = useDeleteSourceMap()
 
   return (
     <section>

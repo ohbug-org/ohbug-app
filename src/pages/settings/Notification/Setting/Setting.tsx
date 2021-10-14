@@ -22,9 +22,9 @@ import EditWebhook from './EditWebhook'
 const Setting: FC<RouteComponentProps> = () => {
   const [currentProject] = useAtom(currentProjectAtom)
   const { data } = useGetSetting({ projectId: currentProject?.id })
-  const { mutation: updateSettingMutation } = useUpdateSetting()
-  const { mutation: updateWebhooksSettingMutation } = useUpdateSettingWebhook()
-  const { mutation: deleteWebhooksSettingMutation } = useDeleteSettingWebhook()
+  const updateSettingMutation = useUpdateSetting()
+  const updateWebhooksSettingMutation = useUpdateSettingWebhook()
+  const deleteWebhooksSettingMutation = useDeleteSettingWebhook()
 
   const [form] = Form.useForm<UpdateSetting>()
   const [currentRule, setCurrentRule] = useState<

@@ -19,14 +19,9 @@ interface Base {
 }
 
 export function useGetRules(params: Base) {
-  const { data } = useQuery<NotificationRule[]>(
-    [`/notification/rules`, params],
-    {
-      enabled: !!params.projectId,
-    }
-  )
-
-  return { data }
+  return useQuery<NotificationRule[]>([`/notification/rules`, params], {
+    enabled: !!params.projectId,
+  })
 }
 
 export interface CreateRule extends Base {
@@ -41,7 +36,7 @@ export interface CreateRule extends Base {
 export function useCreateRule() {
   const queryClient = useQueryClient()
   const key = `/notification/rules`
-  const mutation = useMutation<NotificationRule, unknown, CreateRule>(
+  return useMutation<NotificationRule, unknown, CreateRule>(
     (data) =>
       request<CreateRule, NotificationRule>(key, {
         method: 'POST',
@@ -53,10 +48,6 @@ export function useCreateRule() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export interface UpdateRule extends Base {
@@ -71,7 +62,7 @@ export interface UpdateRule extends Base {
 }
 export function useUpdateRule() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<NotificationRule, unknown, UpdateRule>(
+  return useMutation<NotificationRule, unknown, UpdateRule>(
     (data) =>
       request<UpdateRule, NotificationRule>(
         `/notification/rules/${data.ruleId}`,
@@ -86,10 +77,6 @@ export function useUpdateRule() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export interface DeleteRule extends Base {
@@ -97,7 +84,7 @@ export interface DeleteRule extends Base {
 }
 export function useDeleteRule() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<NotificationRule, unknown, DeleteRule>(
+  return useMutation<NotificationRule, unknown, DeleteRule>(
     (params) =>
       request<UpdateRule, NotificationRule>(
         `/notification/rules/${params.ruleId}`,
@@ -115,21 +102,12 @@ export function useDeleteRule() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export function useGetSetting(params: Base) {
-  const { data } = useQuery<NotificationSetting>(
-    [`/notification/setting`, params],
-    {
-      enabled: !!params.projectId,
-    }
-  )
-
-  return { data }
+  return useQuery<NotificationSetting>([`/notification/setting`, params], {
+    enabled: !!params.projectId,
+  })
 }
 
 export interface UpdateSetting extends Base {
@@ -139,7 +117,7 @@ export interface UpdateSetting extends Base {
 }
 export function useUpdateSetting() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<NotificationSetting, unknown, UpdateSetting>(
+  return useMutation<NotificationSetting, unknown, UpdateSetting>(
     (data) =>
       request<UpdateSetting, NotificationSetting>(`/notification/setting`, {
         method: 'PATCH',
@@ -151,10 +129,6 @@ export function useUpdateSetting() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export interface CreateSettingWebhook extends Base {
@@ -166,11 +140,7 @@ export interface CreateSettingWebhook extends Base {
 }
 export function useCreateSettingWebhook() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<
-    NotificationSettingWebHook,
-    unknown,
-    CreateSettingWebhook
-  >(
+  return useMutation<NotificationSettingWebHook, unknown, CreateSettingWebhook>(
     (data) =>
       request<CreateSettingWebhook, NotificationSettingWebHook>(
         `/notification/setting/webhooks`,
@@ -185,10 +155,6 @@ export function useCreateSettingWebhook() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export interface UpdateSettingWebhook extends Partial<CreateSettingWebhook> {
@@ -196,11 +162,7 @@ export interface UpdateSettingWebhook extends Partial<CreateSettingWebhook> {
 }
 export function useUpdateSettingWebhook() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<
-    NotificationSettingWebHook,
-    unknown,
-    UpdateSettingWebhook
-  >(
+  return useMutation<NotificationSettingWebHook, unknown, UpdateSettingWebhook>(
     (data) =>
       request<UpdateSettingWebhook, NotificationSettingWebHook>(
         `/notification/setting/webhooks/${data.id}`,
@@ -215,10 +177,6 @@ export function useUpdateSettingWebhook() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }
 
 export interface DeleteSettingWebhook extends Base {
@@ -226,11 +184,7 @@ export interface DeleteSettingWebhook extends Base {
 }
 export function useDeleteSettingWebhook() {
   const queryClient = useQueryClient()
-  const mutation = useMutation<
-    NotificationSettingWebHook,
-    unknown,
-    DeleteSettingWebhook
-  >(
+  return useMutation<NotificationSettingWebHook, unknown, DeleteSettingWebhook>(
     (params) =>
       request<UpdateSettingWebhook, NotificationSettingWebHook>(
         `/notification/setting/webhooks/${params.id}`,
@@ -248,8 +202,4 @@ export function useDeleteSettingWebhook() {
       },
     }
   )
-
-  return {
-    mutation,
-  }
 }

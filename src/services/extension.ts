@@ -5,20 +5,12 @@ import type { Extension, ExtensionDetail } from '@/types'
 export function useGetExtensions() {
   type Result = [Extension[], number]
   const page = 0
-  const { data } = useQuery<Result>([`/extensions`, { page }])
-
-  return {
-    data,
-  }
+  return useQuery<Result>([`/extensions`, { page }])
 }
 
 export function useGetExtension(id?: number) {
   type Result = ExtensionDetail
-  const { data } = useQuery<Result>(`/extensions/${id}`, {
+  return useQuery<Result>(`/extensions/${id}`, {
     enabled: !!id,
   })
-
-  return {
-    data,
-  }
 }

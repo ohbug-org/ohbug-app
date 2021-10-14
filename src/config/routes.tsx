@@ -26,6 +26,7 @@ export interface Route {
 const GettingStarted = lazy<FC<RouteComponentProps>>(
   () => import('../pages/getting-started')
 )
+const Login = lazy<FC<RouteComponentProps>>(() => import('../pages/login'))
 const CreateProject = lazy<FC<RouteComponentProps>>(
   () => import('../pages/create-project')
 )
@@ -62,6 +63,13 @@ export const routes: Route[] = [
     path: '/',
     wrapper: Auth,
     redirect: '/issue',
+  },
+  {
+    path: '/login',
+    component: Login,
+    layout: {
+      hideNav: true,
+    },
   },
   {
     path: '/getting-started',

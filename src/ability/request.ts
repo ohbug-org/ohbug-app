@@ -12,6 +12,7 @@ import { navigate } from '@/ability'
 
 axios.defaults.baseURL = `/api/v1`
 axios.defaults.timeout = 10000
+axios.defaults.transformResponse = [(data) => JSON.parse(data)]
 
 export const request = <P extends {} = {}, R = any>(
   context: string | QueryFunctionContext,
@@ -34,46 +35,49 @@ export const request = <P extends {} = {}, R = any>(
     ...config,
     params: { ...config?.params, ...params },
     cancelToken: source.token,
-  }).then((response: AxiosResponse<ResponseStructure<R>>) => {
-    const result = response.data
-    if (result.success && typeof result.data !== 'undefined') {
-      return result.data as R
-    }
-    if (result) {
-      const { errorMessage, errorCode } = result
-      const msg =
-        errorCode !== undefined
-          ? `[${errorCode}]: ${errorMessage}`
-          : errorMessage
-      switch (result.showType) {
-        case ErrorShowType.SILENT:
-          break
-        case ErrorShowType.WARN_MESSAGE:
-          message.warn(msg)
-          break
-        case ErrorShowType.ERROR_MESSAGE:
-          message.error(msg)
-          break
-        case ErrorShowType.NOTIFICATION:
-          notification.open({
-            message: msg,
-          })
-          break
-        case ErrorShowType.REDIRECT:
-          navigate('/403', { state: errorCode })
-          break
-        default:
-          message.error(msg)
-          break
-      }
-    }
-
-    message.error('Request error, please retry.')
-    throw new Error(result.errorMessage)
   })
+    .then((response: AxiosResponse<ResponseStructure<R>>) => {
+      const result = response.data
+      if (result.success && typeof result.data !== 'undefined') {
+        return result.data as R
+      }
+      message.error('Request error, please retry.')
+      throw new Error(result.errorMessage)
+    })
+    .catch((error) => {
+      const { data: result } = error.response
+      if (result) {
+        const { errorMessage, errorCode } = result
+        const msg =
+          errorCode !== undefined
+            ? `[${errorCode}]: ${errorMessage}`
+            : errorMessage
+        switch (result.showType) {
+          case ErrorShowType.SILENT:
+            break
+          case ErrorShowType.WARN_MESSAGE:
+            message.warn(msg)
+            break
+          case ErrorShowType.ERROR_MESSAGE:
+            message.error(msg)
+            break
+          case ErrorShowType.NOTIFICATION:
+            notification.open({
+              message: msg,
+            })
+            break
+          case ErrorShowType.REDIRECT:
+            navigate('/403', { state: errorCode })
+            break
+          default:
+            message.error(msg)
+            break
+        }
+      }
+    })
 
   // @ts-ignore
   promise.cancel = () => source.cancel('Query was cancelled by React Query')
 
-  return promise
+  return promise as Promise<R>
 }
