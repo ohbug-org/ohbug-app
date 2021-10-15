@@ -1,3 +1,9 @@
+## [0.4.1](https://github.com/ohbug-org/ohbug-app/compare/0.4.0...0.4.1) (2021-10-15)
+
+### Bug Fixes
+
+- 修复新用户登录没有 project 不跳转的问题 ([7249d2e](https://github.com/ohbug-org/ohbug-app/commit/7249d2edd220d61ccb3fd537e6875ca45f949e85))
+
 # [0.4.0](https://github.com/ohbug-org/ohbug-app/compare/0.3.0...0.4.0) (2021-10-14)
 
 ### Features
