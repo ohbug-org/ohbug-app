@@ -10,7 +10,23 @@ export const projectsAtom = atomWithQuery<Project[], any>(() => ({
   queryFn: request,
 }))
 
-const projectAtom = atomWithStorage<Project | null>('project', null)
+const defaultStorage = {
+  getItem(key: string) {
+    const storedValue = sessionStorage.getItem(key)
+    if (storedValue === null) {
+      throw new Error('no value stored')
+    }
+    return JSON.parse(storedValue)
+  },
+  setItem(key: string, newValue: unknown) {
+    return sessionStorage.setItem(key, JSON.stringify(newValue))
+  },
+}
+const projectAtom = atomWithStorage<Project | null>(
+  'project',
+  null,
+  defaultStorage
+)
 export const currentProjectAtom = atom<Project, Project>(
   async (get) => (await get(projectAtom)) || (await get(projectsAtom))?.[0],
   (_, set, newData) => {

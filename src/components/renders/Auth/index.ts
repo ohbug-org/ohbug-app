@@ -1,7 +1,6 @@
 import { FC, createElement, isValidElement } from 'react'
 import { useAtom } from 'jotai'
 
-import { Loading } from '@/components'
 import { RouteComponentProps, Redirect } from '@/ability'
 import { userAtom, currentProjectAtom } from '@/atoms'
 
@@ -11,10 +10,6 @@ const Auth: FC<RouteComponentProps> = ({ children }) => {
 
   if (!user) {
     return createElement(Redirect, { to: '/login' })
-  }
-
-  if (!currentProject) {
-    return createElement(Loading)
   }
 
   if (currentProject && isValidElement(children)) {
