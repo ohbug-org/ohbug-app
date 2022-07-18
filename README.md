@@ -6,23 +6,7 @@
 
 # Ohbug App
 
-## Introduction
-
-The front end of the dashboard.
-
-## Deploy
-
-[Deploy](https://ohbug.net/docs/deploy/Deploy)
-
-## Contributors
-
-This project exists thanks to all the people who contribute.
-
-<a href="https://github.com/ohbug-org/ohbug-app/graphs/contributors"><img src="https://opencollective.com/ohbug/contributors.svg?width=890&button=false" /></a>
-
-## ChangeLog
-
-[ChangeLog](./CHANGELOG.md)
+Please go to [ohbug-dashboard](https://github.com/ohbug-org/ohbug-dashboard) to view the latest version
 
 ## Feedback
 
